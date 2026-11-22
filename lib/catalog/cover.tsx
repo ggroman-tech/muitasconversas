@@ -28,6 +28,7 @@ export function BookCover({ book, size = "md", lazy = false }: Props) {
         src={book.cover_url}
         alt={`Capa de ${book.title}`}
         loading={lazy ? "lazy" : undefined}
+        referrerPolicy="no-referrer"
         style={{ display: "block", width: "100%", aspectRatio: "3 / 4", objectFit: "cover", borderRadius: radius, background: "#e4e8e6" }}
       />
     );

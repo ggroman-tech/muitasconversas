@@ -12,8 +12,8 @@ const AREAS = [
   "Glória / Catete / Flamengo / Laranjeiras",
   "Botafogo / Humaitá / Urca",
   "Ipanema / Arpoador / Leblon",
-  "Lagoa / Jardim Botânico / Gávea / Vidigal",
-  "São Conrado / Rocinha",
+  "Lagoa / Jardim Botânico / Gávea",
+  "São Conrado",
 ];
 
 const initial: SignupState = { errors: {}, nonce: 0 };
@@ -187,7 +187,7 @@ export function SignupForm({ email, config }: { email: string; config: SignupCon
           {pending ? "Enviando…" : "Criar minha assinatura"}
         </button>
         <p className={styles.hint} style={{ marginTop: 8 }}>
-          O pagamento é feito em seguida, por Pix ou cartão de crédito (em breve). Não pedimos CPF.
+          O pagamento é feito em seguida, por Pix ou cartão de crédito (em breve).
         </p>
       </div>
     </form>

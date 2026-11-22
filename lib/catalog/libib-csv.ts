@@ -120,6 +120,12 @@ const clean = (s: string | undefined) => {
   return v === "" ? null : v;
 };
 
+/** Só o título principal: corta subtítulo/sinopse depois de ":", " - " e parênteses finais. */
+export function mainTitle(raw: string): string {
+  const t = raw.replace(/\s*:.*$/, "").replace(/\s+-\s+.*$/, "").replace(/\s*\([^)]*\)\s*$/, "").trim();
+  return t || raw.trim();
+}
+
 export function parseLibibCsv(text: string): ParseResult {
   const table = parseCsv(text);
   const warnings: string[] = [];
@@ -169,7 +175,7 @@ export function parseLibibCsv(text: string): ParseResult {
     headers.forEach((h, i) => { if (cells[i] !== undefined && cells[i] !== "") raw[h] = cells[i]; });
 
     rows.push({
-      libib_ref, isbn13, title, authors, publisher,
+      libib_ref, isbn13, title: mainTitle(title), authors, publisher,
       published_year: extractYear(get("publish_date")),
       genres: splitList(get("tags"), /[,;|\n]+/),
       description: clean(get("description")),

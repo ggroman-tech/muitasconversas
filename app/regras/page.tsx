@@ -46,11 +46,11 @@ const regras = [
   { q: "Lembretes", a: "Enviamos lembretes de devolução por e-mail 7, 3 e 1 dia antes do prazo." },
   {
     q: "Área de entrega",
-    a: "Toda a Zona Sul do Rio: Leme/Copacabana; Glória/Catete/Flamengo/Laranjeiras; Botafogo/Humaitá/Urca; Ipanema/Arpoador/Leblon; Lagoa/Jardim Botânico/Gávea/Vidigal; São Conrado/Rocinha.",
+    a: "Zona Sul do Rio: Leme/Copacabana; Glória/Catete/Flamengo/Laranjeiras; Botafogo/Humaitá/Urca; Ipanema/Arpoador/Leblon; Lagoa/Jardim Botânico/Gávea; São Conrado.",
   },
   { q: "Pagamento", a: "Por Pix e cartão de crédito." },
   { q: "Encontros presenciais", a: "Só para assinantes e cobrados à parte." },
-  { q: "Dados pessoais", a: "Nome, endereço e WhatsApp são usados só para prestar o serviço, com seu consentimento (LGPD). Não pedimos CPF." },
+  { q: "Dados pessoais", a: "Nome, endereço e WhatsApp são usados só para prestar o serviço, com seu consentimento (LGPD)." },
 ];
 
 export default function RegrasPage() {

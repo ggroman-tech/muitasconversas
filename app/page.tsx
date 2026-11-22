@@ -19,7 +19,7 @@ const eventos = [
 
 const faq = [
   { q: "Por quanto tempo posso ficar com o livro?", a: "Um livro por vez, por até 28 dias corridos ou troca aos sábados. Não há renovação automática." },
-  { q: "Onde vocês entregam?", a: "Em toda a Zona Sul do Rio, de Leme a São Conrado e Rocinha. Você informa o CEP na assinatura." },
+  { q: "Onde vocês entregam?", a: "Na Zona Sul do Rio, de Leme a São Conrado. Você informa o CEP na assinatura." },
   { q: "Como sou lembrado de devolver?", a: "Por e-mail, 7, 3 e 1 dia antes do fim do prazo. Pedidos e cancelamentos fecham na sexta-feira, às 08h." },
   { q: "E se eu atrasar?", a: "Não há multa, mas enquanto o livro estiver atrasado você não reserva nem recebe outro até devolvê-lo." },
   { q: "Como pago?", a: "Por Pix e cartão de crédito. Assinatura de 30 dias por R$ 30, com frete incluso." },
