@@ -151,7 +151,7 @@ export function ScheduleForm({
       <div className={styles.summary}>
         <p>
           <strong>Sem multa e sem renovação automática.</strong> Você pode
-          cancelar a visita em Minha conta até as 08h do sábado.
+          cancelar a visita em Minha conta até as 08h da sexta-feira.
         </p>
         <button type="submit" className="btn" disabled={pending}>
           {pending ? "Agendando…" : "Agendar"}

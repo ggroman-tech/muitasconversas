@@ -7,7 +7,7 @@ const MESSAGES: Record<string, string> = {
   customer_not_found: "Não encontramos o seu cadastro. Fale com a gente.",
   window_not_found: "Esse horário não existe mais. Escolha outro.",
   day_closed: "Este sábado não está aberto para agendamento.",
-  cutoff_passed: "O prazo para agendar neste sábado já encerrou (08h do sábado). Escolha o próximo sábado, quando abrir.",
+  cutoff_passed: "O prazo para agendar neste sábado já encerrou (08h da sexta-feira). Escolha o próximo sábado, quando abrir.",
   address_not_found: "Endereço inválido. Escolha um dos seus endereços.",
   area_mismatch: "O endereço escolhido não pertence ao bairro desta janela de entrega.",
   already_scheduled: "Você já tem uma visita agendada neste sábado. Cancele em Minha conta para agendar de novo.",

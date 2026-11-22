@@ -146,7 +146,7 @@ export function SignupForm({ email, config }: { email: string; config: SignupCon
         <details className={styles.details}>
           <summary>Resumo das regras</summary>
           <ul className={styles.list} style={{ marginTop: 8 }}>
-            <li>Assinatura de {formatBRL(config.plan_price_cents)} por mês.</li>
+            <li>Assinatura de 30 dias: {formatBRL(config.plan_price_cents)}.</li>
             <li>
               {config.max_open_loans === 1
                 ? "Um livro por vez, "
@@ -187,7 +187,7 @@ export function SignupForm({ email, config }: { email: string; config: SignupCon
           {pending ? "Enviando…" : "Criar minha assinatura"}
         </button>
         <p className={styles.hint} style={{ marginTop: 8 }}>
-          O pagamento é feito em seguida, por Pix (em breve). Não pedimos CPF.
+          O pagamento é feito em seguida, por Pix ou cartão de crédito (em breve). Não pedimos CPF.
         </p>
       </div>
     </form>

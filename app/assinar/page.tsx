@@ -21,7 +21,7 @@ export default function AssinarPage() {
       <aside className={styles.summary} aria-labelledby="resumo-titulo">
         <h2 id="resumo-titulo" className={styles.h2}>Resumo</h2>
         <div className={styles.sumRow}>
-          <span>Assinatura mensal</span>
+          <span>Assinatura de 30 dias</span>
           <strong>R$ 30,00</strong>
         </div>
         <div className={styles.sumRow}>
@@ -30,11 +30,11 @@ export default function AssinarPage() {
         </div>
         <hr className={styles.sumRule} />
         <ul className={styles.list}>
-          <li>1 livro por vez, até 28 dias</li>
-          <li>Troca única aos sábados, das 09h às 14h</li>
-          <li>Pedidos e cancelamentos até as 08h do sábado</li>
+          <li>1 livro por vez, por até 28 dias corridos ou troca aos sábados</li>
+          <li>Trocas aos sábados, das 09h às 14h</li>
+          <li>Pedidos e cancelamentos até sexta-feira, às 08h</li>
           <li>Lembretes por e-mail 7, 3 e 1 dia antes da devolução</li>
-          <li>Pagamento por Pix, em breve</li>
+          <li>Pagamento por Pix e cartão de crédito</li>
           <li>Encontros cobrados à parte</li>
         </ul>
         <span className={styles.sumNote}>

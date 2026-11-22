@@ -1,6 +1,6 @@
 # Integração Pagar.me (frente D)
 
-Plano: R$ 30/mês (`settings.plan_price_cents` = 3000), pagamento por Pix. Esta frente só **recebe** webhooks; não chama a API do Pagar.me.
+Plano: R$ 30 por assinatura de 30 dias (`settings.plan_price_cents` = 3000), pagamento por Pix e cartão de crédito. Esta frente só **recebe** webhooks; não chama a API do Pagar.me.
 
 ## Configuração
 | Onde | Variável | Observação |

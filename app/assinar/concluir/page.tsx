@@ -27,7 +27,7 @@ async function Concluir() {
     <>
       <h1 className={styles.h1}>Cadastro recebido</h1>
       <p className={styles.lead}>
-        Obrigado, {account.full_name.split(" ")[0]}! Sua assinatura ({formatBRL(account.plan_price_cents)} por mês)
+        Obrigado, {account.full_name.split(" ")[0]}! Sua assinatura ({formatBRL(account.plan_price_cents)} a cada 30 dias)
         foi criada e está <strong>aguardando o pagamento</strong>.
       </p>
       {/* PONTO DE EXTENSÃO (frente D): exibir aqui o Pix / link de pagamento

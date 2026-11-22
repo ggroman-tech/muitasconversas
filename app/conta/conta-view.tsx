@@ -309,7 +309,7 @@ function PlanSection({ a }: { a: MyAccountRow }) {
           </span>
         </dd>
         <dt>Valor</dt>
-        <dd>{formatBRL(a.plan_price_cents)} por mês</dd>
+        <dd>{formatBRL(a.plan_price_cents)} a cada 30 dias</dd>
         {a.current_period_end ? (
           <>
             <dt>Pago até</dt>

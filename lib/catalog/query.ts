@@ -31,3 +31,15 @@ export async function getBook(id: string): Promise<CatalogBook | null> {
   const { data } = await sb.from("catalog_public").select(COLS).eq("id", id).maybeSingle();
   return (data as CatalogBook | null) ?? null;
 }
+
+/** Livros em destaque para a home: prioriza os que têm capa. `from`/`to` são índices (inclusivos). */
+export async function featuredBooks(from: number, to: number): Promise<CatalogBook[]> {
+  const sb = await catalogClient();
+  const { data } = await sb
+    .from("catalog_public")
+    .select(COLS)
+    .not("cover_url", "is", null)
+    .order("title")
+    .range(from, to);
+  return (data ?? []) as CatalogBook[];
+}

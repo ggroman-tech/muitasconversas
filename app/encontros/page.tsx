@@ -18,7 +18,7 @@ export default function EncontrosPage() {
         <h1 className="page-title">Encontros</h1>
         <p className={s.lead}>
           Rodas de conversa e trocas presenciais para quem quiser conhecer outros leitores. Neste primeiro momento,
-          só assinantes participam. Cada encontro é cobrado à parte, fora da mensalidade.
+          só assinantes participam. Cada encontro é cobrado à parte, fora da assinatura.
         </p>
       </div>
 

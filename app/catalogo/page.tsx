@@ -66,7 +66,7 @@ async function CatalogoConteudo({ searchParams }: { searchParams: Promise<SP> })
         {disp !== "todos" && <input type="hidden" name="disp" value={disp} />}
         <div className={`field ${s.searchField}`}>
           <label htmlFor="busca" className={s.searchLabel}>Buscar por título, autor ou assunto</label>
-          <input id="busca" className={s.searchInput} type="search" name="q" defaultValue={sp.q ?? ""} placeholder="Ex.: Clarice, romance, poesia" />
+          <input id="busca" className={s.searchInput} type="search" name="q" defaultValue={sp.q ?? ""} placeholder="Ex.: Agatha Christie, Stephen King" />
         </div>
         <button type="submit" className="btn">Buscar</button>
       </form>
@@ -84,7 +84,7 @@ async function CatalogoConteudo({ searchParams }: { searchParams: Promise<SP> })
         </div>
         {genres.length > 0 && (
           <div className={s.group}>
-            <span className={s.groupLabel} id="g-gen">Gênero</span>
+            <span className={s.groupLabel} id="g-gen">Tags</span>
             <div className={s.chips} role="group" aria-labelledby="g-gen">
               <Link href={href(1, { genero: undefined })} className={chipCls(!sp.genero)} aria-current={!sp.genero ? "true" : undefined}>Todos</Link>
               {genres.map((g) => (
@@ -104,7 +104,7 @@ async function CatalogoConteudo({ searchParams }: { searchParams: Promise<SP> })
               <Link href={`/catalogo/${b.id}`} className={s.item}>
                 <BookCover book={b} lazy />
                 <span className={s.bookTitle}>{b.title}</span>
-                <span className={s.genre}>{b.genres[0] ?? b.authors.join(", ")}</span>
+                <span className={s.genre}>{b.authors.join(", ")}</span>
                 <span className={`${s.chipStatus} ${b.copies_available > 0 ? "" : b.queue_size > 0 ? s.chipQueue : s.chipOut}`}>
                   {statusLabel(b)}
                 </span>
@@ -113,7 +113,7 @@ async function CatalogoConteudo({ searchParams }: { searchParams: Promise<SP> })
           ))}
         </ul>
       ) : (
-        <p className={s.empty}>Nenhum livro com esses filtros. Tente outro gênero ou veja todos.</p>
+        <p className={s.empty}>Nenhum livro com esses filtros. Tente outra tag ou veja todos.</p>
       )}
 
       {pages > 1 && (

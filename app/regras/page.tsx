@@ -31,24 +31,24 @@ const areas = [
 ];
 
 const fluxos = [
-  { name: "Assinar", path: "Início → Assinar → confirmar e-mail → dados e endereço → aceite das regras → pagamento por Pix (em breve) → Minha conta" },
+  { name: "Assinar", path: "Início → Assinar → confirmar e-mail → dados e endereço → aceite das regras → pagamento por Pix ou cartão de crédito → Minha conta" },
   { name: "Reservar", path: "Catálogo → Livro → Reservar (ou entrar na fila) → confirmação → entrega no sábado de troca" },
-  { name: "Devolver ou trocar", path: "Minha conta → Agendar → confirmação por e-mail. Pedidos e cancelamentos fecham às 08h do sábado." },
+  { name: "Devolver ou trocar", path: "Minha conta → Agendar → confirmação por e-mail. Pedidos e cancelamentos fecham na sexta-feira, às 08h." },
   { name: "Lembrete", path: "7, 3 e 1 dia antes do prazo: aviso por e-mail com link direto para Agendar" },
 ];
 
 const regras = [
-  { q: "Preço e frete", a: "R$ 30 por mês, com frete incluso." },
+  { q: "Preço e frete", a: "R$ 30 por assinatura de 30 dias, com frete incluso." },
   { q: "Livros por assinante", a: "Um livro por vez." },
-  { q: "Prazo e renovação", a: "Até 28 dias com o livro. Não há renovação automática." },
-  { q: "Dia e horário de troca", a: "Troca única, aos sábados, das 09h às 14h. Pedidos e cancelamentos fecham às 08h do sábado." },
+  { q: "Prazo e renovação", a: "Um livro por vez, por até 28 dias corridos ou troca aos sábados. Não há renovação automática." },
+  { q: "Dia e horário de troca", a: "Trocas aos sábados, das 09h às 14h. Pedidos e cancelamentos fecham na sexta-feira, às 08h." },
   { q: "Atraso", a: "Não há multa. Com um livro atrasado, você não reserva nem recebe outro até devolvê-lo." },
   { q: "Lembretes", a: "Enviamos lembretes de devolução por e-mail 7, 3 e 1 dia antes do prazo." },
   {
     q: "Área de entrega",
     a: "Toda a Zona Sul do Rio: Leme/Copacabana; Glória/Catete/Flamengo/Laranjeiras; Botafogo/Humaitá/Urca; Ipanema/Arpoador/Leblon; Lagoa/Jardim Botânico/Gávea/Vidigal; São Conrado/Rocinha.",
   },
-  { q: "Pagamento", a: "Por Pix, em breve." },
+  { q: "Pagamento", a: "Por Pix e cartão de crédito." },
   { q: "Encontros presenciais", a: "Só para assinantes e cobrados à parte." },
   { q: "Dados pessoais", a: "Nome, endereço e WhatsApp são usados só para prestar o serviço, com seu consentimento (LGPD). Não pedimos CPF." },
 ];

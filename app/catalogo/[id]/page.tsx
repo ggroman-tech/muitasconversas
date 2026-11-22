@@ -94,8 +94,8 @@ async function LivroConteudo({ params, searchParams }: Props) {
                 <h2>{user ? (disponivel ? "Reservar este livro" : "Entrar na fila de espera") : "Reserve este livro"}</h2>
                 <p>
                   {disponivel
-                    ? "Entrega em casa, com frete incluso na mensalidade de R$ 30. Depois da reserva, escolha a troca de sábado (09h às 14h; pedidos fecham às 08h do sábado). Você fica com o livro por até 28 dias, um por vez."
-                    : "Avisamos quando chegar a sua vez. Frete incluso na mensalidade de R$ 30; um livro por vez, por até 28 dias, com troca única aos sábados (09h às 14h)."}
+                    ? "Entrega em casa, com frete incluso na assinatura de 30 dias (R$ 30). Depois da reserva, escolha a troca de sábado (09h às 14h; pedidos fecham na sexta-feira, às 08h). Você fica com o livro por até 28 dias corridos, um por vez, ou troca aos sábados."
+                    : "Avisamos quando chegar a sua vez. Frete incluso na assinatura de 30 dias (R$ 30); um livro por vez, por até 28 dias corridos ou troca aos sábados (09h às 14h)."}
                 </p>
                 <div className="row">
                   <form action={reservar.bind(null, book.id)}>

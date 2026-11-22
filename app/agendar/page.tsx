@@ -21,7 +21,7 @@ export default function AgendarPage() {
         <h1 className="h page-title">Agendar troca ou devolução</h1>
         <p className={styles.lead}>
           Entregas e coletas acontecem aos sábados, das 09h às 14h. Os pedidos
-          fecham às 08h do sábado.
+          fecham na sexta-feira, às 08h.
         </p>
       </div>
       <Suspense fallback={<p role="status">Carregando…</p>}>
