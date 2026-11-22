@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Catálogo</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#14231F;background:#F4F6F3}
+*{box-sizing:border-box}
+a{color:#1F6F5C}
+.nv{color:#14231F;text-decoration:none;font-size:15px;padding:0 4px;min-height:44px;display:inline-flex;align-items:center}
+.nv:hover{color:#1F6F5C}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 22px;border-radius:8px;background:#1F6F5C;color:#fff;text-decoration:none;font-weight:600;font-size:15px}
+.btn:hover{background:#17574A}
+.h{font-family:Fraunces,serif;font-weight:600;margin:0}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="width:100%">
+<header style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding:12px 40px;background:#fff;border-bottom:1px solid #D9E0DB">
+<a href="Main.dc.html" class="h" style="font-size:24px;color:#14231F;text-decoration:none">Muitas Conversas</a>
+<nav style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px">
+<a class="nv" href="Catalogo.dc.html" style="font-weight:600;color:#1F6F5C">Catálogo</a>
+<a class="nv" href="Eventos.dc.html">Encontros</a>
+<a class="nv" href="MinhaConta.dc.html">Minha conta</a>
+<a class="btn" href="Assinar.dc.html">Assinar</a>
+</nav>
+</header>
+
+<div style="max-width:1200px;margin:0 auto;padding:40px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<h1 class="h" style="font-size:44px">Catálogo</h1>
+<p style="margin:0;font-size:16px;color:#3E4F49">{{count}} livros encontrados. Reserve os disponíveis ou entre na fila dos emprestados.</p>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+<div style="flex:1 1 320px;display:flex;flex-direction:column;gap:4px">
+<label for="busca" style="font-size:13px;font-weight:600;color:#3E4F49">Buscar por título, autor ou assunto</label>
+<input id="busca" type="text" placeholder="Ex.: Clarice, romance, poesia" style="min-height:44px;border:1px solid #9AA8A2;border-radius:8px;padding:0 14px;font-size:15px;font-family:inherit;background:#fff;color:#14231F">
+</div>
+<div style="display:flex;flex-direction:column;gap:4px">
+<span style="font-size:13px;font-weight:600;color:#3E4F49">Ordenar</span>
+<span style="min-height:44px;border:1px solid #9AA8A2;border-radius:8px;padding:0 14px;font-size:15px;background:#fff;display:inline-flex;align-items:center">Mais recentes</span>
+</div>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:24px 40px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="font-size:13px;font-weight:600;color:#3E4F49">Disponibilidade</span>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{dispChips}}" as="c" hint-placeholder-count="3">
+<button onClick="{{c.pick}}" style="min-height:44px;padding:0 16px;border-radius:22px;border:1px solid #1F6F5C;background:{{c.bg}};color:{{c.fg}};font-size:14px;font-weight:600;cursor:pointer">{{c.label}}</button>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="font-size:13px;font-weight:600;color:#3E4F49">Gênero</span>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{genChips}}" as="c" hint-placeholder-count="6">
+<button onClick="{{c.pick}}" style="min-height:44px;padding:0 16px;border-radius:22px;border:1px solid #1F6F5C;background:{{c.bg}};color:{{c.fg}};font-size:14px;font-weight:600;cursor:pointer">{{c.label}}</button>
+</sc-for>
+</div>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:28px 24px;padding-top:8px">
+<sc-for list="{{books}}" as="b" hint-placeholder-count="8">
+<a href="Livro.dc.html" style="text-decoration:none;color:#14231F;display:flex;flex-direction:column;gap:8px">
+<div style="aspect-ratio:3/4;border-radius:6px;background:{{b.color}};color:#fff;padding:14px;display:flex;flex-direction:column;justify-content:space-between"><span style="font-family:Fraunces,serif;font-size:19px;line-height:1.2">{{b.title}}</span><span style="font-size:12px">{{b.author}}</span></div>
+<span style="font-weight:600;font-size:15px">{{b.title}}</span>
+<span style="font-size:13px;color:#4B5A55">{{b.genre}}</span>
+<span style="align-self:flex-start;font-size:12px;font-weight:600;padding:4px 10px;border-radius:12px;background:{{b.chipBg}};color:{{b.chipFg}}">{{b.status}}</span>
+</a>
+</sc-for>
+</div>
+<sc-if value="{{empty}}" hint-placeholder-val="{{false}}">
+<p style="margin:0;padding:40px 0;text-align:center;color:#3E4F49">Nenhum livro com esses filtros. Tente outro gênero ou veja todos.</p>
+</sc-if>
+<p style="margin:0;font-size:13px;color:#4B5A55">No site real, esta lista vem do catálogo do Libib e se atualiza a cada empréstimo.</p>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1800}}'>
+class Component extends DCLogic {
+constructor(p){ super(p); this.state = {disp:'todos', gen:'Todos'}; }
+renderVals() {
+const S = {
+ok:{chipBg:'#DCEFE6', chipFg:'#14523F', status:'Disponível', k:'disp'},
+out:{chipBg:'#E4E8E6', chipFg:'#34413C', status:'Emprestado', k:'out'},
+res:{chipBg:'#FBE7C8', chipFg:'#5E3700', status:'Reservado', k:'res'}
+};
+const all = [
+{title:'Torto Arado', author:'Itamar Vieira Junior', genre:'Romance brasileiro', color:'#7A3B12', ...S.ok},
+{title:'Quarto de Despejo', author:'Carolina Maria de Jesus', genre:'Não ficção', color:'#7A1F2B', ...S.res},
+{title:'Capitães da Areia', author:'Jorge Amado', genre:'Romance brasileiro', color:'#1E3A5F', ...S.ok},
+{title:'Ensaio sobre a Cegueira', author:'José Saramago', genre:'Ficção', color:'#2D2D2D', ...S.out},
+{title:'Cem Anos de Solidão', author:'Gabriel García Márquez', genre:'Ficção', color:'#6B4E16', ...S.ok},
+{title:'Dom Casmurro', author:'Machado de Assis', genre:'Clássicos', color:'#1F3D36', ...S.ok},
+{title:'A Hora da Estrela', author:'Clarice Lispector', genre:'Romance brasileiro', color:'#5A2A3C', ...S.out},
+{title:'Vidas Secas', author:'Graciliano Ramos', genre:'Clássicos', color:'#8A4B0E', ...S.ok},
+{title:'Sapiens', author:'Yuval Noah Harari', genre:'Não ficção', color:'#234B52', ...S.ok},
+{title:'A Revolução dos Bichos', author:'George Orwell', genre:'Clássicos', color:'#3F4F1E', ...S.out},
+{title:'O Pequeno Príncipe', author:'Antoine de Saint-Exupéry', genre:'Infantojuvenil', color:'#1D4E89', ...S.ok},
+{title:'O Cortiço', author:'Aluísio Azevedo', genre:'Clássicos', color:'#4A2F6B', ...S.res}
+];
+const d = this.state.disp, g = this.state.gen;
+const books = all.filter(b => (d==='todos' || b.k===d) && (g==='Todos' || b.genre===g));
+const chip = (label, on, fn) => ({label, bg: on ? '#1F6F5C' : '#fff', fg: on ? '#fff' : '#1F6F5C', pick: fn});
+const dispChips = [['todos','Todos'],['disp','Disponíveis'],['out','Emprestados']].map(([k,l]) => chip(l, d===k, () => this.setState({disp:k})));
+const genChips = ['Todos','Romance brasileiro','Ficção','Clássicos','Não ficção','Infantojuvenil'].map(l => chip(l, g===l, () => this.setState({gen:l})));
+return { books, count: books.length, empty: books.length===0, dispChips, genChips };
+}
+}
+</script>
+</body>
+</html>

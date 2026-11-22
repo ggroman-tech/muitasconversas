@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Agendar troca ou devolução</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#14231F;background:#F4F6F3}
+*{box-sizing:border-box}
+a{color:#1F6F5C}
+.nv{color:#14231F;text-decoration:none;font-size:15px;padding:0 4px;min-height:44px;display:inline-flex;align-items:center}
+.nv:hover{color:#1F6F5C}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 22px;border-radius:8px;background:#1F6F5C;color:#fff;text-decoration:none;font-weight:600;font-size:15px;border:0;font-family:inherit;cursor:pointer}
+.btn:hover{background:#17574A}
+.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 22px;border-radius:8px;background:#fff;color:#1F6F5C;border:1px solid #1F6F5C;text-decoration:none;font-weight:600;font-size:15px}
+.h{font-family:Fraunces,serif;font-weight:600;margin:0}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="width:100%">
+<header style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding:12px 40px;background:#fff;border-bottom:1px solid #D9E0DB">
+<a href="Main.dc.html" class="h" style="font-size:24px;color:#14231F;text-decoration:none">Muitas Conversas</a>
+<nav style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px">
+<a class="nv" href="Catalogo.dc.html">Catálogo</a>
+<a class="nv" href="Eventos.dc.html">Encontros</a>
+<a class="nv" href="MinhaConta.dc.html" style="font-weight:600;color:#1F6F5C">Minha conta</a>
+<span style="font-size:14px;color:#4B5A55">[NOME DO ASSINANTE]</span>
+</nav>
+</header>
+
+<div style="max-width:1000px;margin:0 auto;padding:40px;display:flex;flex-direction:column;gap:28px">
+<a href="MinhaConta.dc.html" style="font-size:15px;font-weight:600;min-height:44px;display:inline-flex;align-items:center">Voltar para minha conta</a>
+<div style="display:flex;flex-direction:column;gap:8px">
+<h1 class="h" style="font-size:40px">Agendar troca ou devolução</h1>
+<p style="margin:0;font-size:16px;color:#3E4F49">As trocas acontecem aos sábados. O motoboy entrega o próximo livro e busca o que você leu na mesma visita.</p>
+</div>
+
+<sc-if value="{{notDone}}" hint-placeholder-val="{{true}}">
+<div style="display:flex;flex-direction:column;gap:28px">
+
+<section style="background:#fff;border:1px solid #D9E0DB;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px">
+<h2 class="h" style="font-size:22px">1. O que você quer fazer</h2>
+<div style="display:flex;flex-wrap:wrap;gap:12px">
+<sc-for list="{{tipos}}" as="t" hint-placeholder-count="2">
+<button onClick="{{t.pick}}" style="flex:1 1 280px;min-height:72px;text-align:left;padding:14px 18px;border-radius:10px;border:2px solid {{t.border}};background:{{t.bg}};cursor:pointer;display:flex;flex-direction:column;gap:2px;color:#14231F"><span style="font-weight:600;font-size:16px">{{t.label}}</span><span style="font-size:14px;color:#3E4F49">{{t.hint}}</span></button>
+</sc-for>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:center;padding-top:8px;border-top:1px solid #E4E8E6">
+<div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#4B5A55">Vamos buscar</span><span style="font-weight:600">Dom Casmurro</span></div>
+<sc-if value="{{comProximo}}" hint-placeholder-val="{{true}}">
+<div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#4B5A55">Vamos entregar</span><span style="font-weight:600">Torto Arado (reservado)</span></div>
+</sc-if>
+</div>
+</section>
+
+<section style="background:#fff;border:1px solid #D9E0DB;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px">
+<h2 class="h" style="font-size:22px">2. Escolha o sábado</h2>
+<div style="display:flex;flex-wrap:wrap;gap:12px">
+<sc-for list="{{sabados}}" as="s" hint-placeholder-count="4">
+<button onClick="{{s.pick}}" style="min-width:150px;min-height:64px;padding:10px 16px;border-radius:10px;border:2px solid {{s.border}};background:{{s.bg}};cursor:pointer;display:flex;flex-direction:column;gap:2px;align-items:flex-start;color:#14231F"><span style="font-weight:600">{{s.label}}</span><span style="font-size:13px;color:#3E4F49">{{s.note}}</span></button>
+</sc-for>
+</div>
+<p style="margin:0;font-size:14px;color:#4B5A55">O primeiro sábado livre depois do prazo de 4 semanas vem marcado. Você pode antecipar a devolução.</p>
+</section>
+
+<section style="background:#fff;border:1px solid #D9E0DB;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px">
+<h2 class="h" style="font-size:22px">3. Janela de horário</h2>
+<div style="display:flex;flex-wrap:wrap;gap:12px">
+<sc-for list="{{janelas}}" as="j" hint-placeholder-count="3">
+<button onClick="{{j.pick}}" style="min-width:150px;min-height:48px;padding:0 16px;border-radius:10px;border:2px solid {{j.border}};background:{{j.bg}};cursor:pointer;font-weight:600;color:#14231F">{{j.label}}</button>
+</sc-for>
+</div>
+</section>
+
+<section style="background:#fff;border:1px solid #D9E0DB;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:12px">
+<h2 class="h" style="font-size:22px">4. Endereço</h2>
+<span style="font-size:15px;line-height:1.5">[RUA, Nº, COMPLEMENTO] · [BAIRRO] · [CEP]</span>
+<div style="display:flex;flex-direction:column;gap:4px;max-width:520px">
+<label for="obs" style="font-size:13px;font-weight:600;color:#3E4F49">Recado para o entregador (opcional)</label>
+<input id="obs" type="text" placeholder="Ex.: deixar com o porteiro" style="min-height:44px;border:1px solid #9AA8A2;border-radius:8px;padding:0 14px;font-size:15px;font-family:inherit;background:#fff;color:#14231F">
+</div>
+</section>
+
+<div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;background:#E6F0EC;border:1px solid #1F6F5C;border-radius:12px;padding:20px 24px">
+<span style="font-size:16px;line-height:1.5"><strong>{{resumo}}</strong></span>
+<button class="btn" onClick="{{confirm}}">Confirmar agendamento</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{done}}" hint-placeholder-val="{{false}}">
+<div style="background:#E6F0EC;border:1px solid #1F6F5C;border-radius:12px;padding:32px;display:flex;flex-direction:column;gap:12px">
+<h2 class="h" style="font-size:28px">Agendado</h2>
+<p style="margin:0;font-size:16px;line-height:1.55">{{resumo}} Enviamos a confirmação por WhatsApp e e-mail, e lembramos você na véspera.</p>
+<div style="display:flex;flex-wrap:wrap;gap:12px"><a class="btn2" href="MinhaConta.dc.html">Voltar para minha conta</a><a class="btn2" href="Catalogo.dc.html">Continuar no catálogo</a></div>
+</div>
+</sc-if>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
+class Component extends DCLogic {
+constructor(p){ super(p); this.state = {tipo:'troca', sab:1, jan:1, done:false}; }
+renderVals() {
+const {tipo, sab, jan, done} = this.state;
+const sel = (on) => ({border: on ? '#1F6F5C' : '#C5D0CB', bg: on ? '#E6F0EC' : '#fff'});
+const tipos = [
+{id:'troca', label:'Trocar por outro livro', hint:'Buscamos um e entregamos o próximo na mesma visita.'},
+{id:'devolucao', label:'Só devolver', hint:'Buscamos o livro e você não recebe outro agora.'}
+].map(t => ({...t, ...sel(tipo===t.id), pick: () => this.setState({tipo:t.id})}));
+const sabadosRaw = [
+{label:'Sáb [DATA 1]', note:'Antecipado'},
+{label:'Sáb [DATA 2]', note:'Dentro do prazo'},
+{label:'Sáb [DATA 3]', note:'Último dia do prazo'},
+{label:'Sáb [DATA 4]', note:'Com atraso'}
+];
+const sabados = sabadosRaw.map((s,i) => ({...s, ...sel(sab===i), pick: () => this.setState({sab:i})}));
+const jRaw = ['09h às 12h','12h às 15h','15h às 18h'];
+const janelas = jRaw.map((l,i) => ({label:l, ...sel(jan===i), pick: () => this.setState({jan:i})}));
+const resumo = (tipo==='troca' ? 'Troca' : 'Devolução') + ' no ' + sabadosRaw[sab].label.toLowerCase() + ', das ' + jRaw[jan] + '.';
+return { tipos, sabados, janelas, resumo, comProximo: tipo==='troca', notDone: !done, done, confirm: () => this.setState({done:true}) };
+}
+}
+</script>
+</body>
+</html>

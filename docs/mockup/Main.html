@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Início</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#14231F;background:#F4F6F3}
+*{box-sizing:border-box}
+a{color:#1F6F5C}
+.nv{color:#14231F;text-decoration:none;font-size:15px;padding:0 4px;min-height:44px;display:inline-flex;align-items:center}
+.nv:hover{color:#1F6F5C}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 22px;border-radius:8px;background:#1F6F5C;color:#fff;text-decoration:none;font-weight:600;font-size:15px}
+.btn:hover{background:#17574A}
+.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 22px;border-radius:8px;background:#fff;color:#1F6F5C;border:1px solid #1F6F5C;text-decoration:none;font-weight:600;font-size:15px}
+.btn2:hover{background:#E6F0EC}
+.h{font-family:Fraunces,serif;font-weight:600;margin:0}
+</style>
+</helmet>
+<div style="width:100%">
+<div style="background:#14231F;color:#E6F0EC;font-size:13px;padding:8px 40px;text-align:center">Mockup para validação. Livros, datas e preços são exemplos.</div>
+<header style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding:12px 40px;background:#fff;border-bottom:1px solid #D9E0DB">
+<a href="Main.dc.html" class="h" style="font-size:24px;color:#14231F;text-decoration:none">Muitas Conversas</a>
+<nav style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px">
+<a class="nv" href="Catalogo.dc.html">Catálogo</a>
+<a class="nv" href="Eventos.dc.html">Encontros</a>
+<a class="nv" href="MinhaConta.dc.html">Minha conta</a>
+<a class="btn" href="Assinar.dc.html">Assinar</a>
+</nav>
+</header>
+
+<section style="max-width:1200px;margin:0 auto;padding:72px 40px;display:flex;flex-wrap:wrap;align-items:center;gap:48px">
+<div style="flex:1 1 440px;min-width:0;display:flex;flex-direction:column;gap:24px">
+<h1 class="h" style="font-size:56px;line-height:1.08">Um livro por vez, na sua porta.</h1>
+<p style="margin:0;font-size:19px;line-height:1.55;color:#3E4F49;max-width:520px">Assine por R$ 30 por mês, escolha no catálogo e receba em casa na Zona Sul. Fique até 4 semanas com o livro e troque aos sábados.</p>
+<div style="display:flex;flex-wrap:wrap;gap:12px">
+<a class="btn" href="Assinar.dc.html">Quero assinar</a>
+<a class="btn2" href="Catalogo.dc.html">Ver o catálogo</a>
+</div>
+<p style="margin:0;font-size:14px;color:#4B5A55">Frete incluso. Entregas por enquanto só na Zona Sul do Rio.</p>
+</div>
+<div style="flex:1 1 360px;min-width:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+<sc-for list="{{hero}}" as="b" hint-placeholder-count="3">
+<div style="aspect-ratio:3/4;border-radius:6px;background:{{b.color}};color:#fff;padding:14px;display:flex;flex-direction:column;justify-content:space-between;margin-top:{{b.offset}}px"><span style="font-family:Fraunces,serif;font-size:18px;line-height:1.2">{{b.title}}</span><span style="font-size:12px">{{b.author}}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section style="background:#fff;border-top:1px solid #D9E0DB;border-bottom:1px solid #D9E0DB">
+<div style="max-width:1200px;margin:0 auto;padding:64px 40px;display:flex;flex-direction:column;gap:32px">
+<h2 class="h" style="font-size:34px">Como funciona</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px">
+<sc-for list="{{steps}}" as="s" hint-placeholder-count="4">
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="width:36px;height:36px;border-radius:18px;background:#E6F0EC;color:#14523F;font-weight:600;display:flex;align-items:center;justify-content:center">{{s.n}}</span>
+<h3 class="h" style="font-size:20px">{{s.title}}</h3>
+<p style="margin:0;font-size:15px;line-height:1.55;color:#3E4F49">{{s.text}}</p>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section style="max-width:1200px;margin:0 auto;padding:64px 40px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px">
+<h2 class="h" style="font-size:34px">Novidades no catálogo</h2>
+<a href="Catalogo.dc.html" style="font-weight:600">Ver todos os livros</a>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:24px">
+<sc-for list="{{novos}}" as="b" hint-placeholder-count="5">
+<a href="Livro.dc.html" style="text-decoration:none;color:#14231F;display:flex;flex-direction:column;gap:8px">
+<div style="aspect-ratio:3/4;border-radius:6px;background:{{b.color}};color:#fff;padding:14px;display:flex;flex-direction:column;justify-content:space-between"><span style="font-family:Fraunces,serif;font-size:18px;line-height:1.2">{{b.title}}</span><span style="font-size:12px">{{b.author}}</span></div>
+<span style="align-self:flex-start;font-size:12px;font-weight:600;padding:4px 10px;border-radius:12px;background:{{b.chipBg}};color:{{b.chipFg}}">{{b.status}}</span>
+</a>
+</sc-for>
+</div>
+</section>
+
+<section style="background:#fff;border-top:1px solid #D9E0DB;border-bottom:1px solid #D9E0DB">
+<div style="max-width:1200px;margin:0 auto;padding:64px 40px;display:flex;flex-wrap:wrap;gap:40px">
+<div style="flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:16px">
+<h2 class="h" style="font-size:34px">Próximos encontros</h2>
+<p style="margin:0;color:#3E4F49;font-size:16px;line-height:1.55">Por enquanto, os encontros presenciais são só para assinantes. Cada evento é cobrado à parte.</p>
+<div><a class="btn2" href="Eventos.dc.html">Ver todos os encontros</a></div>
+</div>
+<div style="flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:12px">
+<sc-for list="{{eventos}}" as="e" hint-placeholder-count="2">
+<div style="background:#F4F6F3;border:1px solid #D9E0DB;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:4px">
+<span style="font-size:13px;font-weight:600;color:#1F6F5C">{{e.when}}</span>
+<span class="h" style="font-size:20px">{{e.title}}</span>
+<span style="font-size:14px;color:#4B5A55">{{e.where}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section style="max-width:1200px;margin:0 auto;padding:64px 40px;display:flex;flex-direction:column;gap:24px">
+<h2 class="h" style="font-size:34px">Perguntas frequentes</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px">
+<sc-for list="{{faq}}" as="f" hint-placeholder-count="4">
+<div style="background:#fff;border:1px solid #D9E0DB;border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:8px">
+<h3 class="h" style="font-size:18px">{{f.q}}</h3>
+<p style="margin:0;font-size:15px;line-height:1.55;color:#3E4F49">{{f.a}}</p>
+</div>
+</sc-for>
+</div>
+</section>
+
+<footer style="background:#14231F;color:#E6F0EC">
+<div style="max-width:1200px;margin:0 auto;padding:40px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px">
+<div style="display:flex;flex-direction:column;gap:6px"><span class="h" style="font-size:22px">Muitas Conversas</span><span style="font-size:14px">Livros que voltam para a conversa.</span></div>
+<div style="display:flex;flex-direction:column;gap:6px;font-size:14px"><span>Canal no WhatsApp: [LINK DO CANAL]</span><span>Contato: [E-MAIL]</span><span>Instagram: [@PERFIL]</span></div>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2500}}'>
+class Component extends DCLogic {
+renderVals() {
+const ok = {chipBg:'#DCEFE6', chipFg:'#14523F', status:'Disponível'};
+const out = {chipBg:'#E4E8E6', chipFg:'#34413C', status:'Emprestado'};
+const res = {chipBg:'#FBE7C8', chipFg:'#5E3700', status:'Reservado'};
+return {
+hero: [
+{title:'Torto Arado', author:'Itamar Vieira Junior', color:'#7A3B12', offset:0},
+{title:'Vidas Secas', author:'Graciliano Ramos', color:'#1E3A5F', offset:32},
+{title:'Quarto de Despejo', author:'Carolina Maria de Jesus', color:'#7A1F2B', offset:0}
+],
+steps: [
+{n:'1', title:'Assine', text:'Cadastre-se com seu endereço na Zona Sul e pague R$ 30 por mês. O frete já está incluso.'},
+{n:'2', title:'Escolha e reserve', text:'Navegue pelo catálogo, veja o que está disponível e reserve. Se o livro estiver emprestado, entre na fila.'},
+{n:'3', title:'Receba em casa', text:'Entregamos o livro no seu endereço, na janela de horário que você escolher.'},
+{n:'4', title:'Troque aos sábados', text:'Fique até 4 semanas. Agende a devolução e receba o próximo livro na mesma visita.'}
+],
+novos: [
+{title:'Torto Arado', author:'Itamar Vieira Junior', color:'#7A3B12', ...ok},
+{title:'Quarto de Despejo', author:'Carolina Maria de Jesus', color:'#7A1F2B', ...res},
+{title:'Capitães da Areia', author:'Jorge Amado', color:'#1E3A5F', ...ok},
+{title:'Ensaio sobre a Cegueira', author:'José Saramago', color:'#2D2D2D', ...out},
+{title:'Cem Anos de Solidão', author:'Gabriel García Márquez', color:'#6B4E16', ...ok}
+],
+eventos: [
+{when:'Sábado · [DATA] · [HORA]', title:'Roda de conversa: [LIVRO DO MÊS]', where:'[LOCAL] · só para assinantes'},
+{when:'Sábado · [DATA] · [HORA]', title:'Troca de livros e café', where:'[LOCAL] · só para assinantes'}
+],
+faq: [
+{q:'Por quanto tempo posso ficar com o livro?', a:'Até 4 semanas com o mesmo livro. Aos sábados você pode trocar.'},
+{q:'Onde vocês entregam?', a:'Por enquanto só na Zona Sul do Rio, pela facilidade de transporte. Você informa o CEP na assinatura.'},
+{q:'Como sou lembrado de devolver?', a:'Por e-mail ou WhatsApp, antes do fim do prazo.'},
+{q:'Os encontros estão incluídos?', a:'Não. Os eventos são cobrados à parte, mas por enquanto são restritos aos assinantes.'}
+]
+};
+}
+}
+</script>
+</body>
+</html>

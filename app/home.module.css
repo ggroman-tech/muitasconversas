@@ -1,0 +1,40 @@
+.hero { max-width: 1200px; margin: 0 auto; padding: 72px 40px; display: flex; flex-wrap: wrap; align-items: center; gap: 48px; }
+.heroText { flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 24px; }
+.heroTitle { font-size: 56px; line-height: 1.08; }
+.heroLead { font-size: 19px; line-height: 1.55; color: var(--ink-2); max-width: 520px; }
+.heroNote { font-size: 14px; color: var(--ink-3); }
+.heroCovers { flex: 1 1 360px; min-width: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.band { background: #fff; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.inner { max-width: 1200px; margin: 0 auto; padding: 64px 40px; display: flex; flex-direction: column; gap: 32px; }
+.innerRow { max-width: 1200px; margin: 0 auto; padding: 64px 40px; display: flex; flex-wrap: wrap; gap: 40px; }
+.h2 { font-size: 34px; }
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; list-style: none; margin: 0; padding: 0; }
+.step { display: flex; flex-direction: column; gap: 8px; }
+.stepN { width: 36px; height: 36px; border-radius: 18px; background: var(--tint); color: var(--brand-deep); font-weight: 600; display: flex; align-items: center; justify-content: center; }
+.stepTitle { font-size: 20px; }
+.text { font-size: 15px; line-height: 1.55; color: var(--ink-2); }
+.headRow { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 12px; }
+.headRow a { font-weight: 600; }
+.books { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 24px; list-style: none; margin: 0; padding: 0; }
+.book { display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: var(--ink); }
+.book .badge { align-self: flex-start; min-height: 0; padding: 4px 10px; font-size: 12px; }
+.sOut { background: var(--line-2); color: #34413c; }
+.sRes { background: var(--warn-bg); color: var(--warn-ink); }
+.evText { flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+.evList { flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 12px; list-style: none; margin: 0; padding: 0; }
+.ev { background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 4px; }
+.evWhen { font-size: 13px; font-weight: 600; color: var(--brand); }
+.evTitle { font-size: 20px; }
+.evWhere { font-size: 14px; color: var(--ink-3); }
+.faq { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr)); gap: 16px; }
+.faqItem { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+.faqItem h3 { font-size: 18px; }
+.sec { max-width: 1200px; margin: 0 auto; padding: 64px 40px; display: flex; flex-direction: column; gap: 24px; }
+@media (max-width: 640px) {
+  .hero { padding: 40px 20px; gap: 32px; }
+  .heroTitle { font-size: 36px; }
+  .heroLead { font-size: 17px; }
+  .inner, .innerRow, .sec { padding: 40px 20px; }
+  .h2 { font-size: 28px; }
+  .heroCovers { gap: 10px; }
+}

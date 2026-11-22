@@ -1,0 +1,10 @@
+item_type,title,creators,first_name,last_name,ean_isbn13,upc_isbn10,description,publisher,publish_date,group,tags,notes,price,length,copies
+book,Dom Casmurro,Machado de Assis,Machado,de Assis,9788535911664,,"Bentinho e Capitu, ""ciúme"" e memória.
+Um clássico.",Companhia das Letras,2016-01-01,,"Romance, Clássicos",,,256,2
+book,Capitães da Areia,Jorge Amado,Jorge,Amado,9788535914061,,Meninos de rua na Bahia.,Companhia das Letras,2008,,Romance,,,280,1
+book,Torto Arado,Itamar Vieira Junior,Itamar,Vieira Junior,9786580309320,,,Todavia,2019-05-10,,"Romance, Contemporâneo",,,264,1
+book,Quarto de Despejo,Carolina Maria de Jesus,,,,8508040555,Diário de uma favelada.,Ática,1960,,"Memórias; Biografia",,,200,
+book,Sem ISBN Aqui,Autora Fictícia; Outro Autor,,,,,Livro sem código de barras.,Editora Fictícia,2020,,Poesia,,,80,1
+dvd,Filme Qualquer,Diretor,,,,,,,2001,,Cinema,,,,1
+book,,Sem Titulo,,,,,,,,,,,,,1
+book,ISBN Quebrado,Alguém,,,1234567890123,,,,2010,,Conto,,,100,abc

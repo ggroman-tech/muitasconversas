@@ -1,0 +1,273 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.cols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+}
+.main {
+  flex: 2 1 560px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.aside {
+  flex: 1 1 320px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.panelSm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.h2 {
+  font-size: 22px;
+}
+.h2sm {
+  font-size: 20px;
+}
+.alertBox {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+}
+.alertBox p {
+  max-width: 70ch;
+}
+
+/* livro atual */
+.loan {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.cover {
+  width: 140px;
+  flex: none;
+  background: #1f3d36;
+}
+.loanInfo {
+  flex: 1 1 280px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.loanTitle {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.2;
+}
+.small {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+.meta {
+  font-size: 14px;
+  color: var(--ink-3);
+}
+.progressWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.bar {
+  height: 10px;
+  border-radius: 5px;
+  background: var(--line-2);
+  overflow: hidden;
+}
+.barFill {
+  height: 100%;
+  background: var(--brand);
+  border-radius: 5px;
+}
+.barLate {
+  background: #b4691f;
+}
+.progressText {
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 4px;
+}
+.empty {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+}
+
+/* listas em linhas */
+.line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line-2);
+}
+.line:first-of-type {
+  border-top: 0;
+  padding-top: 0;
+}
+.lineMain {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.lineTitle {
+  font-weight: 600;
+  font-size: 16px;
+}
+.lineSub {
+  font-size: 14px;
+  color: var(--ink-3);
+}
+.plain {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.histLine {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line-2);
+  font-size: 15px;
+}
+.histLine:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+/* próxima troca */
+.next {
+  background: var(--tint);
+  border: 1px solid var(--brand);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.nextLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand-deep);
+}
+.nextDay {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.2;
+}
+.nextItems {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 15px;
+}
+.link {
+  font-weight: 600;
+  font-size: 15px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* definições */
+.dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 16px;
+  margin: 0;
+  font-size: 15px;
+}
+.dl dt {
+  color: var(--ink-3);
+  font-size: 14px;
+}
+.dl dd {
+  margin: 0;
+}
+.addr {
+  font-style: normal;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.list {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+
+/* cancelar visita */
+.cancel {
+  margin-top: 8px;
+}
+.cancel summary {
+  cursor: pointer;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--danger-ink);
+}
+.cancelBody {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px 0 4px;
+}
+
+@media (max-width: 640px) {
+  .cover {
+    width: 112px;
+  }
+  .dl {
+    grid-template-columns: 1fr;
+    gap: 0 16px;
+  }
+  .dl dd {
+    margin-bottom: 8px;
+  }
+}

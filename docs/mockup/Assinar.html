@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Assinar</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#14231F;background:#F4F6F3}
+*{box-sizing:border-box}
+a{color:#1F6F5C}
+.nv{color:#14231F;text-decoration:none;font-size:15px;padding:0 4px;min-height:44px;display:inline-flex;align-items:center}
+.nv:hover{color:#1F6F5C}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 22px;border-radius:8px;background:#1F6F5C;color:#fff;text-decoration:none;font-weight:600;font-size:15px;border:0;font-family:inherit;cursor:pointer}
+.btn:hover{background:#17574A}
+.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 22px;border-radius:8px;background:#fff;color:#1F6F5C;border:1px solid #1F6F5C;text-decoration:none;font-weight:600;font-size:15px}
+.h{font-family:Fraunces,serif;font-weight:600;margin:0}
+.in{min-height:44px;border:1px solid #9AA8A2;border-radius:8px;padding:0 14px;font-size:15px;font-family:inherit;background:#fff;color:#14231F;width:100%}
+.lb{font-size:13px;font-weight:600;color:#3E4F49}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="width:100%">
+<header style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding:12px 40px;background:#fff;border-bottom:1px solid #D9E0DB">
+<a href="Main.dc.html" class="h" style="font-size:24px;color:#14231F;text-decoration:none">Muitas Conversas</a>
+<nav style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px">
+<a class="nv" href="Catalogo.dc.html">Catálogo</a>
+<a class="nv" href="Eventos.dc.html">Encontros</a>
+<a class="nv" href="MinhaConta.dc.html">Já sou assinante</a>
+</nav>
+</header>
+
+<div style="max-width:1100px;margin:0 auto;padding:40px;display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start">
+<div style="flex:2 1 520px;min-width:0;display:flex;flex-direction:column;gap:24px">
+<h1 class="h" style="font-size:44px">Assine e comece a ler</h1>
+
+<section style="background:#fff;border:1px solid #D9E0DB;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px">
+<h2 class="h" style="font-size:22px">Seus dados</h2>
+<div style="display:flex;flex-direction:column;gap:4px"><label class="lb" for="n">Nome completo</label><input id="n" class="in" type="text"></div>
+<div style="display:flex;flex-wrap:wrap;gap:16px">
+<div style="flex:1 1 240px;display:flex;flex-direction:column;gap:4px"><label class="lb" for="e">E-mail</label><input id="e" class="in" type="email"></div>
+<div style="flex:1 1 240px;display:flex;flex-direction:column;gap:4px"><label class="lb" for="w">WhatsApp</label><input id="w" class="in" type="tel"></div>
+</div>
+</section>
+
+<section style="background:#fff;border:1px solid #D9E0DB;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px">
+<h2 class="h" style="font-size:22px">Endereço de entrega</h2>
+<p style="margin:0;font-size:14px;color:#4B5A55">Por enquanto entregamos só na Zona Sul. Escolha seu bairro para conferir.</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{bairros}}" as="b" hint-placeholder-count="8">
+<button onClick="{{b.pick}}" style="min-height:44px;padding:0 16px;border-radius:22px;border:1px solid #1F6F5C;background:{{b.bg}};color:{{b.fg}};font-size:14px;font-weight:600;cursor:pointer">{{b.label}}</button>
+</sc-for>
+</div>
+<sc-if value="{{foraDaArea}}" hint-placeholder-val="{{false}}">
+<div style="background:#FBE7C8;border-radius:10px;padding:14px 18px;font-size:14px;line-height:1.5;color:#5E3700">Ainda não entregamos nessa região. Deixe seu contato abaixo e avisamos quando chegar aí.</div>
+</sc-if>
+<sc-if value="{{dentro}}" hint-placeholder-val="{{true}}">
+<div style="background:#DCEFE6;border-radius:10px;padding:14px 18px;font-size:14px;color:#14523F">Entregamos no seu bairro.</div>
+</sc-if>
+<div style="display:flex;flex-wrap:wrap;gap:16px">
+<div style="flex:1 1 160px;display:flex;flex-direction:column;gap:4px"><label class="lb" for="c">CEP</label><input id="c" class="in" type="text"></div>
+<div style="flex:3 1 320px;display:flex;flex-direction:column;gap:4px"><label class="lb" for="r">Rua e número</label><input id="r" class="in" type="text"></div>
+<div style="flex:1 1 160px;display:flex;flex-direction:column;gap:4px"><label class="lb" for="cp">Complemento</label><input id="cp" class="in" type="text"></div>
+</div>
+</section>
+
+<section style="background:#fff;border:1px solid #D9E0DB;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px">
+<h2 class="h" style="font-size:22px">Lembretes e pagamento</h2>
+<div style="display:flex;flex-direction:column;gap:8px">
+<span class="lb">Lembrete de devolução por</span>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{canais}}" as="c" hint-placeholder-count="3">
+<button onClick="{{c.pick}}" style="min-height:44px;padding:0 16px;border-radius:22px;border:1px solid #1F6F5C;background:{{c.bg}};color:{{c.fg}};font-size:14px;font-weight:600;cursor:pointer">{{c.label}}</button>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px"><span class="lb">Forma de pagamento</span><span style="font-size:15px;color:#3E4F49">[A DEFINIR: Pix recorrente, cartão ou link mensal pelo WhatsApp]</span></div>
+<div style="display:flex;gap:12px;align-items:flex-start">
+<input id="ok" type="checkbox" style="width:22px;height:22px;margin-top:2px">
+<label for="ok" style="font-size:14px;line-height:1.5;color:#3E4F49">Li e concordo com as regras: até 4 semanas por livro, cuidado com o exemplar e [REGRA DE ATRASO E DANO].</label>
+</div>
+</section>
+</div>
+
+<aside style="flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:16px;background:#fff;border:1px solid #D9E0DB;border-radius:12px;padding:24px">
+<h2 class="h" style="font-size:22px">Resumo</h2>
+<div style="display:flex;justify-content:space-between;font-size:15px"><span>Assinatura mensal</span><strong>R$ 30,00</strong></div>
+<div style="display:flex;justify-content:space-between;font-size:15px"><span>Frete</span><strong>Incluso</strong></div>
+<div style="height:1px;background:#E4E8E6"></div>
+<ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.7;color:#3E4F49">
+<li>1 livro por vez, até 4 semanas</li>
+<li>Troca aos sábados</li>
+<li>Reservas e fila pelo site</li>
+<li>Encontros cobrados à parte</li>
+</ul>
+<a class="btn" href="MinhaConta.dc.html">Finalizar assinatura</a>
+<span style="font-size:13px;color:#4B5A55">Cancele quando quiser. [CONFIRMAR POLÍTICA DE CANCELAMENTO]</span>
+</aside>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
+class Component extends DCLogic {
+constructor(p){ super(p); this.state = {bairro:'Botafogo', canal:'WhatsApp'}; }
+renderVals() {
+const {bairro, canal} = this.state;
+const lista = ['Botafogo','Flamengo','Laranjeiras','Catete','Urca','Copacabana','Ipanema','Leblon','Gávea','Jardim Botânico','Lagoa','Humaitá','Outro bairro'];
+const chip = (l, on, fn) => ({label:l, bg: on ? '#1F6F5C' : '#fff', fg: on ? '#fff' : '#1F6F5C', pick: fn});
+const fora = bairro === 'Outro bairro';
+return {
+bairros: lista.map(l => chip(l, bairro===l, () => this.setState({bairro:l}))),
+canais: ['WhatsApp','E-mail','Os dois'].map(l => chip(l, canal===l, () => this.setState({canal:l}))),
+foraDaArea: fora, dentro: !fora
+};
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.back {
+  font-size: 15px;
+  font-weight: 600;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+}
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.lead {
+  font-size: 16px;
+  color: var(--ink-2);
+  max-width: 65ch;
+}
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.h2 {
+  font-size: 22px;
+}
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.todo {
+  list-style: none;
+  margin: 0;
+  padding: 16px 0 0;
+  border-top: 1px solid var(--line-2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 32px;
+}
+.todo li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.todoLabel {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.todoValue {
+  font-weight: 600;
+}
+.hint {
+  font-size: 14px;
+  color: var(--ink-3);
+}
+
+/* fieldset como cartão */
+.fieldset {
+  min-width: 0;
+  margin: 0;
+}
+.fieldset > legend {
+  float: left;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 16px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--ink);
+}
+.fieldset > legend + * {
+  clear: both;
+}
+.fieldset > :not(legend) {
+  margin-top: 0;
+}
+.fieldsetBody {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.day {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.dayHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+}
+.dayName {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+  text-transform: capitalize;
+}
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  min-width: 150px;
+  padding: 10px 16px;
+  border: 2px solid #c5d0cb;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.option:hover {
+  border-color: var(--brand);
+}
+.option:has(input:checked) {
+  border-color: var(--brand);
+  background: var(--tint);
+}
+.option:has(input:disabled) {
+  opacity: 0.55;
+  cursor: not-allowed;
+  background: var(--bg);
+}
+.option:has(input:focus-visible) {
+  outline: 3px solid var(--brand);
+  outline-offset: 2px;
+}
+.optionText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-weight: 600;
+}
+.optionSub {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--ink-3);
+}
+.addressList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.addressList .option {
+  align-items: flex-start;
+  font-weight: 400;
+}
+.addressList .optionText {
+  font-weight: 400;
+}
+.noteField {
+  max-width: 520px;
+}
+.noteField textarea {
+  min-height: 88px;
+}
+
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--tint);
+  border: 1px solid var(--brand);
+  border-radius: 12px;
+  padding: 20px 24px;
+}
+.summary p {
+  font-size: 16px;
+  line-height: 1.5;
+  max-width: 60ch;
+}
+
+.done {
+  background: var(--tint);
+  border: 1px solid var(--brand);
+  border-radius: 12px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.done h2 {
+  font-size: 28px;
+}
+.done p {
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.empty {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+}
+
+@media (max-width: 640px) {
+  .option {
+    width: 100%;
+  }
+  .summary {
+    padding: 16px;
+  }
+  .summary :global(.btn) {
+    width: 100%;
+  }
+  .done {
+    padding: 24px 20px;
+  }
+}

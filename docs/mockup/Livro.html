@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Página do livro</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#14231F;background:#F4F6F3}
+*{box-sizing:border-box}
+a{color:#1F6F5C}
+.nv{color:#14231F;text-decoration:none;font-size:15px;padding:0 4px;min-height:44px;display:inline-flex;align-items:center}
+.nv:hover{color:#1F6F5C}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 22px;border-radius:8px;background:#1F6F5C;color:#fff;text-decoration:none;font-weight:600;font-size:15px;border:0;font-family:inherit;cursor:pointer}
+.btn:hover{background:#17574A}
+.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 22px;border-radius:8px;background:#fff;color:#1F6F5C;border:1px solid #1F6F5C;text-decoration:none;font-weight:600;font-size:15px;font-family:inherit;cursor:pointer}
+.h{font-family:Fraunces,serif;font-weight:600;margin:0}
+</style>
+</helmet>
+<div style="width:100%">
+<header style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding:12px 40px;background:#fff;border-bottom:1px solid #D9E0DB">
+<a href="Main.dc.html" class="h" style="font-size:24px;color:#14231F;text-decoration:none">Muitas Conversas</a>
+<nav style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px">
+<a class="nv" href="Catalogo.dc.html" style="font-weight:600;color:#1F6F5C">Catálogo</a>
+<a class="nv" href="Eventos.dc.html">Encontros</a>
+<a class="nv" href="MinhaConta.dc.html">Minha conta</a>
+<a class="btn" href="Assinar.dc.html">Assinar</a>
+</nav>
+</header>
+
+<div style="max-width:1200px;margin:0 auto;padding:32px 40px;display:flex;flex-direction:column;gap:32px">
+<a href="Catalogo.dc.html" style="font-size:15px;font-weight:600;min-height:44px;display:inline-flex;align-items:center">Voltar ao catálogo</a>
+
+<div style="display:flex;flex-wrap:wrap;gap:48px">
+<div style="flex:0 1 320px;min-width:240px">
+<div style="aspect-ratio:3/4;border-radius:8px;background:#7A3B12;color:#fff;padding:24px;display:flex;flex-direction:column;justify-content:space-between"><span style="font-family:Fraunces,serif;font-size:32px;line-height:1.15">Torto Arado</span><span style="font-size:15px">Itamar Vieira Junior</span></div>
+</div>
+
+<div style="flex:1 1 440px;min-width:0;display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="font-size:13px;font-weight:600;color:#1F6F5C">Romance brasileiro</span>
+<h1 class="h" style="font-size:44px;line-height:1.1">Torto Arado</h1>
+<span style="font-size:18px;color:#3E4F49">Itamar Vieira Junior</span>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center">
+<span style="font-size:13px;font-weight:600;padding:5px 12px;border-radius:12px;background:{{chipBg}};color:{{chipFg}}">{{statusLabel}}</span>
+<span style="font-size:14px;color:#4B5A55">{{statusNote}}</span>
+</div>
+
+<p style="margin:0;font-size:16px;line-height:1.65;color:#3E4F49;max-width:640px">[SINOPSE DO LIVRO. No site real, vem do cadastro no Libib: sinopse, editora, ano, páginas e ISBN.]</p>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;max-width:640px;padding:16px 0;border-top:1px solid #D9E0DB;border-bottom:1px solid #D9E0DB">
+<div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#4B5A55">Editora</span><span style="font-size:15px;font-weight:500">[EDITORA]</span></div>
+<div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#4B5A55">Ano</span><span style="font-size:15px;font-weight:500">[ANO]</span></div>
+<div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#4B5A55">Páginas</span><span style="font-size:15px;font-weight:500">[Nº]</span></div>
+<div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;color:#4B5A55">Exemplares</span><span style="font-size:15px;font-weight:500">{{copies}}</span></div>
+</div>
+
+<sc-if value="{{showForm}}" hint-placeholder-val="{{true}}">
+<div style="background:#fff;border:1px solid #D9E0DB;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;max-width:640px">
+<h2 class="h" style="font-size:22px">{{formTitle}}</h2>
+<p style="margin:0;font-size:15px;line-height:1.55;color:#3E4F49">{{formText}}</p>
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+<button class="btn" onClick="{{reserve}}">{{ctaLabel}}</button>
+<a class="btn2" href="Assinar.dc.html">Ainda não sou assinante</a>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{done}}" hint-placeholder-val="{{false}}">
+<div style="background:#E6F0EC;border:1px solid #1F6F5C;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:12px;max-width:640px">
+<h2 class="h" style="font-size:22px">{{doneTitle}}</h2>
+<p style="margin:0;font-size:15px;line-height:1.55;color:#14231F">{{doneText}}</p>
+<div style="display:flex;flex-wrap:wrap;gap:12px">
+<a class="btn" href="Agendar.dc.html">Agendar entrega</a>
+<a class="btn2" href="MinhaConta.dc.html">Ver minha conta</a>
+</div>
+</div>
+</sc-if>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:16px;padding-top:24px">
+<h2 class="h" style="font-size:26px">Mais de Itamar Vieira Junior e leituras parecidas</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:24px">
+<sc-for list="{{similar}}" as="b" hint-placeholder-count="4">
+<a href="Livro.dc.html" style="text-decoration:none;color:#14231F;display:flex;flex-direction:column;gap:8px">
+<div style="aspect-ratio:3/4;border-radius:6px;background:{{b.color}};color:#fff;padding:12px;display:flex;flex-direction:column;justify-content:space-between"><span style="font-family:Fraunces,serif;font-size:17px;line-height:1.2">{{b.title}}</span><span style="font-size:12px">{{b.author}}</span></div>
+<span style="align-self:flex-start;font-size:12px;font-weight:600;padding:4px 10px;border-radius:12px;background:{{b.chipBg}};color:{{b.chipFg}}">{{b.status}}</span>
+</a>
+</sc-for>
+</div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"situacao":{"editor":"enum","default":"disponivel","options":["disponivel","emprestado"]},"$preview":{"width":1280,"height":1400}}'>
+class Component extends DCLogic {
+constructor(p){ super(p); this.state = {done:false}; }
+renderVals() {
+const free = (this.props.situacao ?? 'disponivel') === 'disponivel';
+const done = this.state.done;
+return {
+chipBg: free ? '#DCEFE6' : '#E4E8E6',
+chipFg: free ? '#14523F' : '#34413C',
+statusLabel: free ? 'Disponível' : 'Emprestado',
+statusNote: free ? 'Pronto para entrega no próximo sábado.' : 'Previsão de devolução: [DATA]. Há [N] pessoas na fila.',
+copies: free ? '1 de 1 disponível' : '0 de 1 disponível',
+showForm: !done,
+formTitle: free ? 'Reservar este livro' : 'Entrar na fila de espera',
+formText: free ? 'Você recebe em casa, sem frete. Depois da reserva, escolha o sábado e a janela de horário. Você pode ficar até 4 semanas.' : 'Avisamos por e-mail ou WhatsApp quando chegar a sua vez. Você pode manter até [N] reservas e filas ao mesmo tempo.',
+ctaLabel: free ? 'Reservar livro' : 'Entrar na fila',
+reserve: () => this.setState({done:true}),
+done,
+doneTitle: free ? 'Livro reservado' : 'Você está na fila',
+doneText: free ? 'Guardamos o exemplar para você. Agende a entrega para confirmar o sábado e o horário.' : 'Você é o [Nº] da fila. Avisamos assim que o livro voltar.',
+similar: [
+{title:'Capitães da Areia', author:'Jorge Amado', color:'#1E3A5F', status:'Disponível', chipBg:'#DCEFE6', chipFg:'#14523F'},
+{title:'Vidas Secas', author:'Graciliano Ramos', color:'#8A4B0E', status:'Disponível', chipBg:'#DCEFE6', chipFg:'#14523F'},
+{title:'Quarto de Despejo', author:'Carolina Maria de Jesus', color:'#7A1F2B', status:'Reservado', chipBg:'#FBE7C8', chipFg:'#5E3700'},
+{title:'A Hora da Estrela', author:'Clarice Lispector', color:'#5A2A3C', status:'Emprestado', chipBg:'#E4E8E6', chipFg:'#34413C'}
+]
+};
+}
+}
+</script>
+</body>
+</html>

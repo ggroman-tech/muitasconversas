@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Encontros</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#14231F;background:#F4F6F3}
+*{box-sizing:border-box}
+a{color:#1F6F5C}
+.nv{color:#14231F;text-decoration:none;font-size:15px;padding:0 4px;min-height:44px;display:inline-flex;align-items:center}
+.nv:hover{color:#1F6F5C}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 22px;border-radius:8px;background:#1F6F5C;color:#fff;text-decoration:none;font-weight:600;font-size:15px}
+.btn:hover{background:#17574A}
+.h{font-family:Fraunces,serif;font-weight:600;margin:0}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="width:100%">
+<header style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding:12px 40px;background:#fff;border-bottom:1px solid #D9E0DB">
+<a href="Main.dc.html" class="h" style="font-size:24px;color:#14231F;text-decoration:none">Muitas Conversas</a>
+<nav style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px">
+<a class="nv" href="Catalogo.dc.html">Catálogo</a>
+<a class="nv" href="Eventos.dc.html" style="font-weight:600;color:#1F6F5C">Encontros</a>
+<a class="nv" href="MinhaConta.dc.html">Minha conta</a>
+<a class="btn" href="Assinar.dc.html">Assinar</a>
+</nav>
+</header>
+
+<div style="max-width:1000px;margin:0 auto;padding:40px;display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<h1 class="h" style="font-size:44px">Encontros</h1>
+<p style="margin:0;font-size:16px;line-height:1.55;color:#3E4F49;max-width:640px">Rodas de conversa e trocas presenciais para quem quiser conhecer outros leitores. Neste primeiro momento, só assinantes participam. Cada encontro é cobrado à parte.</p>
+</div>
+<div style="background:#FBE7C8;border-radius:10px;padding:14px 18px;font-size:14px;color:#5E3700">Os avisos de novos encontros saem no canal do WhatsApp: [LINK DO CANAL].</div>
+
+<div style="display:flex;flex-direction:column;gap:16px">
+<sc-for list="{{eventos}}" as="e" hint-placeholder-count="3">
+<div style="background:#fff;border:1px solid #D9E0DB;border-radius:12px;padding:24px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between">
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:center;flex:1 1 420px;min-width:0">
+<div style="width:72px;height:72px;border-radius:10px;background:#E6F0EC;color:#14523F;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none"><span style="font-size:12px;font-weight:600">SÁB</span><span style="font-family:Fraunces,serif;font-size:24px;font-weight:600">[DD]</span></div>
+<div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+<span class="h" style="font-size:22px">{{e.title}}</span>
+<span style="font-size:14px;color:#4B5A55">[HORA] · [LOCAL] · {{e.vagas}}</span>
+<span style="font-size:15px;color:#3E4F49">{{e.desc}}</span>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start">
+<span style="font-weight:600;font-size:16px">{{e.preco}}</span>
+<button onClick="{{e.pick}}" style="min-height:44px;padding:0 22px;border-radius:8px;border:1px solid #1F6F5C;background:{{e.bg}};color:{{e.fg}};font-weight:600;font-size:15px;cursor:pointer">{{e.label}}</button>
+</div>
+</div>
+</sc-for>
+</div>
+
+<p style="margin:0;font-size:13px;color:#4B5A55">No site real, o pagamento do ingresso pode ser por Pix na confirmação ou combinado pelo WhatsApp (a definir).</p>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1300}}'>
+class Component extends DCLogic {
+constructor(p){ super(p); this.state = {inscritos:{}}; }
+renderVals() {
+const base = [
+{id:'a', title:'Roda de conversa: [LIVRO DO MÊS]', desc:'Leitura comentada e conversa aberta, com café.', vagas:'[N] vagas', preco:'R$ [VALOR]'},
+{id:'b', title:'Troca de livros e café', desc:'Traga um livro seu e leve outro. Sem custo de entrega.', vagas:'[N] vagas', preco:'R$ [VALOR]'},
+{id:'c', title:'Clube de leitura: [TEMA]', desc:'Encontro mensal com tema e leitura combinados antes.', vagas:'[N] vagas', preco:'R$ [VALOR]'}
+];
+const eventos = base.map(e => {
+const on = !!this.state.inscritos[e.id];
+return {...e, label: on ? 'Inscrição feita' : 'Quero participar', bg: on ? '#1F6F5C' : '#fff', fg: on ? '#fff' : '#1F6F5C',
+pick: () => this.setState({inscritos: {...this.state.inscritos, [e.id]: !on}})};
+});
+return { eventos };
+}
+}
+</script>
+</body>
+</html>

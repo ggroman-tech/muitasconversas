@@ -1,0 +1,110 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import styles from "./regras.module.css";
+
+export const metadata: Metadata = { title: "Regras e mapa do site" };
+
+const areas = [
+  {
+    title: "Público",
+    who: "Qualquer visitante",
+    items: [
+      "Início: proposta, como funciona, preço, perguntas frequentes",
+      "Catálogo: busca e status de cada livro",
+      "Encontros: lista e valores",
+      "Assinar: cadastro, CEP e aceite das regras",
+      "Regras e mapa do site (esta página)",
+    ],
+  },
+  {
+    title: "Área do assinante",
+    who: "Exige login",
+    items: [
+      "Minha conta: livro atual, prazo e plano",
+      "Reservas e fila de espera",
+      "Agendar troca ou devolução (sábado)",
+      "Histórico de leituras",
+      "Endereço de entrega",
+      "Inscrição em encontros",
+    ],
+  },
+];
+
+const fluxos = [
+  { name: "Assinar", path: "Início → Assinar → confirmar e-mail → dados e endereço → aceite das regras → pagamento por Pix (em breve) → Minha conta" },
+  { name: "Reservar", path: "Catálogo → Livro → Reservar (ou entrar na fila) → confirmação → entrega no sábado de troca" },
+  { name: "Devolver ou trocar", path: "Minha conta → Agendar → confirmação por e-mail. Pedidos e cancelamentos fecham às 08h do sábado." },
+  { name: "Lembrete", path: "7, 3 e 1 dia antes do prazo: aviso por e-mail com link direto para Agendar" },
+];
+
+const regras = [
+  { q: "Preço e frete", a: "R$ 30 por mês, com frete incluso." },
+  { q: "Livros por assinante", a: "Um livro por vez." },
+  { q: "Prazo e renovação", a: "Até 28 dias com o livro. Não há renovação automática." },
+  { q: "Dia e horário de troca", a: "Troca única, aos sábados, das 09h às 14h. Pedidos e cancelamentos fecham às 08h do sábado." },
+  { q: "Atraso", a: "Não há multa. Com um livro atrasado, você não reserva nem recebe outro até devolvê-lo." },
+  { q: "Lembretes", a: "Enviamos lembretes de devolução por e-mail 7, 3 e 1 dia antes do prazo." },
+  {
+    q: "Área de entrega",
+    a: "Toda a Zona Sul do Rio: Leme/Copacabana; Glória/Catete/Flamengo/Laranjeiras; Botafogo/Humaitá/Urca; Ipanema/Arpoador/Leblon; Lagoa/Jardim Botânico/Gávea/Vidigal; São Conrado/Rocinha.",
+  },
+  { q: "Pagamento", a: "Por Pix, em breve." },
+  { q: "Encontros presenciais", a: "Só para assinantes e cobrados à parte." },
+  { q: "Dados pessoais", a: "Nome, endereço e WhatsApp são usados só para prestar o serviço, com seu consentimento (LGPD). Não pedimos CPF." },
+];
+
+export default function RegrasPage() {
+  return (
+    <main id="conteudo" className={styles.wrap}>
+      <div className={styles.head}>
+        <h1 className={styles.title}>Regras e mapa do site</h1>
+        <p className={styles.lead}>
+          O que existe no Muitas Conversas, quem vê cada coisa e as regras do serviço.
+        </p>
+      </div>
+
+      <div className={styles.areas}>
+        {areas.map((a) => (
+          <section key={a.title} className={styles.panel} aria-labelledby={`area-${a.title}`}>
+            <h2 id={`area-${a.title}`}>{a.title}</h2>
+            <span className={styles.who}>{a.who}</span>
+            <ul className={styles.items}>
+              {a.items.map((i) => (
+                <li key={i}>{i}</li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+
+      <section className={`${styles.panel} ${styles.panelBig}`} aria-labelledby="fluxos-titulo">
+        <h2 id="fluxos-titulo">Fluxos principais</h2>
+        <div className={styles.grid2}>
+          {fluxos.map((f) => (
+            <div key={f.name} className={styles.flow}>
+              <strong>{f.name}</strong>
+              <span>{f.path}</span>
+            </div>
+          ))}
+        </div>
+        <p className={styles.links}>
+          Ir para: <Link href="/">Início</Link> · <Link href="/catalogo">Catálogo</Link> ·{" "}
+          <Link href="/conta">Minha conta</Link> · <Link href="/agendar">Agendar</Link> ·{" "}
+          <Link href="/encontros">Encontros</Link> · <Link href="/assinar">Assinar</Link>
+        </p>
+      </section>
+
+      <section className={`${styles.panel} ${styles.panelBig}`} aria-labelledby="regras-titulo">
+        <h2 id="regras-titulo">Regras do serviço</h2>
+        <dl className={styles.rules}>
+          {regras.map((r) => (
+            <div key={r.q} className={styles.rule}>
+              <dt>{r.q}</dt>
+              <dd>{r.a}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    </main>
+  );
+}

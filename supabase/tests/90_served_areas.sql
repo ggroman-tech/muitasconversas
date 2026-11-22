@@ -1,0 +1,11 @@
+begin;
+select t.eq((select area_name from check_service_area('22021-001')), 'Leme e Copacabana', 'Copacabana');
+select t.eq((select area_name from check_service_area('22220-000')), 'Glória, Catete, Flamengo e Laranjeiras', 'Flamengo/Laranjeiras');
+select t.eq((select area_name from check_service_area('22250-040')), 'Botafogo, Humaitá e Urca', 'Botafogo');
+select t.eq((select area_name from check_service_area('22410-003')), 'Ipanema, Arpoador e Leblon', 'Ipanema');
+select t.eq((select area_name from check_service_area('22461-000')), 'Lagoa, Jardim Botânico, Gávea e Vidigal', 'Jardim Botânico');
+select t.eq((select area_name from check_service_area('22610-000')), 'São Conrado e Rocinha', 'São Conrado');
+select t.eq((select count(*)::int from check_service_area('20040-020')), 0, 'Centro fora');
+select t.eq((select count(*)::int from check_service_area('22793-080')), 0, 'Barra fora');
+select t.eq((select count(*)::int from served_areas where name in ('Leme e Copacabana','São Conrado e Rocinha') and active), 2, 'seed ativo');
+rollback;

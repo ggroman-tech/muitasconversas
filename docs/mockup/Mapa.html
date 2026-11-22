@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Mapa do site e regras</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#14231F;background:#F4F6F3}
+*{box-sizing:border-box}
+.h{font-family:Fraunces,serif;font-weight:600;margin:0}
+a{color:#1F6F5C;font-weight:600}
+</style>
+</helmet>
+<div style="width:100%;max-width:1200px;margin:0 auto;padding:48px 40px;display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<h1 class="h" style="font-size:44px">Mapa do site e regras</h1>
+<p style="margin:0;font-size:16px;line-height:1.55;color:#3E4F49;max-width:720px">Uma página de apoio para validar o que existe, quem vê cada coisa e quais regras o site precisa aplicar. Itens em [colchetes] são decisões pendentes.</p>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px">
+<sc-for list="{{areas}}" as="a" hint-placeholder-count="3">
+<section style="background:#fff;border:1px solid #D9E0DB;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:12px">
+<h2 class="h" style="font-size:22px">{{a.title}}</h2>
+<span style="font-size:13px;color:#4B5A55">{{a.who}}</span>
+<ul style="margin:0;padding-left:18px;font-size:15px;line-height:1.7;color:#14231F">
+<sc-for list="{{a.items}}" as="i" hint-placeholder-count="5"><li>{{i}}</li></sc-for>
+</ul>
+</section>
+</sc-for>
+</div>
+
+<section style="background:#fff;border:1px solid #D9E0DB;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px">
+<h2 class="h" style="font-size:24px">Fluxos principais</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px">
+<sc-for list="{{fluxos}}" as="f" hint-placeholder-count="3">
+<div style="background:#F4F6F3;border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:6px">
+<strong style="font-size:15px">{{f.name}}</strong>
+<span style="font-size:14px;line-height:1.55;color:#3E4F49">{{f.path}}</span>
+</div>
+</sc-for>
+</div>
+<p style="margin:0;font-size:14px;color:#3E4F49">Abra cada tela no canvas: <a href="Main.dc.html">Início</a> · <a href="Catalogo.dc.html">Catálogo</a> · <a href="Livro.dc.html">Livro</a> · <a href="MinhaConta.dc.html">Minha conta</a> · <a href="Agendar.dc.html">Agendar</a> · <a href="Eventos.dc.html">Encontros</a> · <a href="Assinar.dc.html">Assinar</a></p>
+</section>
+
+<section style="background:#fff;border:1px solid #D9E0DB;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px">
+<h2 class="h" style="font-size:24px">Regras de negócio para confirmar</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:12px 32px">
+<sc-for list="{{regras}}" as="r" hint-placeholder-count="8">
+<div style="display:flex;flex-direction:column;gap:2px"><strong style="font-size:15px">{{r.q}}</strong><span style="font-size:14px;line-height:1.5;color:#3E4F49">{{r.a}}</span></div>
+</sc-for>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
+class Component extends DCLogic {
+renderVals() {
+return {
+areas: [
+{title:'Público', who:'Qualquer visitante', items:['Início: proposta, como funciona, preço, FAQ','Catálogo: busca, filtros, status de cada livro','Página do livro: dados, status, botão reservar','Encontros: lista e valores (inscrição só logado)','Assinar: cadastro, CEP, aceite das regras']},
+{title:'Área do assinante', who:'Exige login', items:['Minha conta: livro atual, prazo, plano','Reservas e fila de espera','Agendar troca ou devolução (sábados)','Histórico de leituras','Endereço, canal de lembrete, pagamento','Inscrição em encontros']},
+{title:'Equipe (painel interno)', who:'Fora deste mockup, senha própria', items:['Pedidos de reserva e fila','Rota de sábado: entregas e coletas por bairro','Cadastro de assinantes e cobranças','Devoluções, atrasos e estado dos livros','Encontros e inscritos','Sincronia com o Libib']}
+],
+fluxos: [
+{name:'Assinar', path:'Início → Assinar → conferir bairro → dados e aceite → pagamento → Minha conta'},
+{name:'Reservar', path:'Catálogo → Livro → Reservar (ou fila) → confirmação → Agendar entrega'},
+{name:'Devolver ou trocar', path:'Minha conta → Agendar → tipo, sábado, janela → confirmação por WhatsApp e e-mail'},
+{name:'Lembrete', path:'[X] dias antes do prazo: aviso por e-mail ou WhatsApp com link direto para Agendar'}
+],
+regras: [
+{q:'Preço e frete', a:'R$ 30 por mês com frete incluso. Entrega e coleta na mesma viagem (o custo do motoboy precisa caber nisso).'},
+{q:'Livros por assinante', a:'Hoje, 1 por vez. [Pode reservar o próximo enquanto lê o atual?]'},
+{q:'Prazo e renovação', a:'Até 4 semanas. [Pode renovar? Quantas vezes?]'},
+{q:'Atraso', a:'[Multa, bloqueio de novas reservas ou só lembrete?]'},
+{q:'Dano ou perda', a:'[Cobrança do valor do livro? Quem avalia?]'},
+{q:'Dia de troca', a:'Sábado. [Todos no mesmo dia ou turmas por semana, para limitar entregas por rota?]'},
+{q:'Fila de espera', a:'[Quanto tempo o livro fica guardado para quem é o próximo da fila?]'},
+{q:'Área de entrega', a:'Zona Sul por enquanto. [Lista final de bairros e regra para quem está fora.]'},
+{q:'Pagamento', a:'[Pix recorrente, cartão ou cobrança manual? Quem trata falha de pagamento?]'},
+{q:'Cancelamento e pausa', a:'[Como devolve o livro ao cancelar? Existe pausa?]'},
+{q:'Catálogo', a:'Origem: Libib. [Exportar CSV periódico, ou ler a página pública do Libib?]'},
+{q:'Dados pessoais', a:'Nome, endereço e WhatsApp: precisa de aviso de privacidade e consentimento (LGPD).'}
+]
+};
+}
+}
+</script>
+</body>
+</html>

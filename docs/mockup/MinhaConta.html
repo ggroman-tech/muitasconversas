@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Minha conta</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:#14231F;background:#F4F6F3}
+*{box-sizing:border-box}
+a{color:#1F6F5C}
+.nv{color:#14231F;text-decoration:none;font-size:15px;padding:0 4px;min-height:44px;display:inline-flex;align-items:center}
+.nv:hover{color:#1F6F5C}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 22px;border-radius:8px;background:#1F6F5C;color:#fff;text-decoration:none;font-weight:600;font-size:15px}
+.btn:hover{background:#17574A}
+.btn2{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 22px;border-radius:8px;background:#fff;color:#1F6F5C;border:1px solid #1F6F5C;text-decoration:none;font-weight:600;font-size:15px}
+.h{font-family:Fraunces,serif;font-weight:600;margin:0}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="width:100%">
+<header style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding:12px 40px;background:#fff;border-bottom:1px solid #D9E0DB">
+<a href="Main.dc.html" class="h" style="font-size:24px;color:#14231F;text-decoration:none">Muitas Conversas</a>
+<nav style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px">
+<a class="nv" href="Catalogo.dc.html">Catálogo</a>
+<a class="nv" href="Eventos.dc.html">Encontros</a>
+<a class="nv" href="MinhaConta.dc.html" style="font-weight:600;color:#1F6F5C">Minha conta</a>
+<span style="font-size:14px;color:#4B5A55">[NOME DO ASSINANTE]</span>
+</nav>
+</header>
+
+<div style="max-width:1200px;margin:0 auto;padding:40px;display:flex;flex-direction:column;gap:32px">
+<h1 class="h" style="font-size:40px">Olá, [NOME]</h1>
+
+<div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+<section style="flex:2 1 560px;min-width:0;display:flex;flex-direction:column;gap:24px">
+
+<div style="background:#fff;border:1px solid #D9E0DB;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:20px">
+<h2 class="h" style="font-size:22px">Livro que está com você</h2>
+<div style="display:flex;flex-wrap:wrap;gap:24px">
+<div style="width:140px;aspect-ratio:3/4;border-radius:6px;background:#1F3D36;color:#fff;padding:12px;display:flex;flex-direction:column;justify-content:space-between"><span style="font-family:Fraunces,serif;font-size:18px;line-height:1.2">Dom Casmurro</span><span style="font-size:12px">Machado de Assis</span></div>
+<div style="flex:1 1 280px;min-width:0;display:flex;flex-direction:column;gap:12px">
+<span style="font-size:13px;color:#4B5A55">Entregue em [DATA]</span>
+<span style="font-size:15px">Devolver até <strong>[DATA]</strong></span>
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="height:10px;border-radius:5px;background:#E4E8E6;overflow:hidden"><div style="width:62%;height:100%;background:#1F6F5C"></div></div>
+<span style="font-size:13px;color:#3E4F49">Semana 3 de 4 · faltam [N] dias</span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;padding-top:4px">
+<a class="btn" href="Agendar.dc.html">Agendar devolução</a>
+<a class="btn2" href="Catalogo.dc.html">Escolher o próximo livro</a>
+</div>
+</div>
+</div>
+</div>
+
+<div style="background:#fff;border:1px solid #D9E0DB;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px">
+<h2 class="h" style="font-size:22px">Reservas e fila</h2>
+<sc-for list="{{reservas}}" as="r" hint-placeholder-count="2">
+<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #E4E8E6">
+<div style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:600;font-size:16px">{{r.title}}</span><span style="font-size:14px;color:#4B5A55">{{r.author}}</span></div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px"><span style="font-size:12px;font-weight:600;padding:4px 10px;border-radius:12px;background:{{r.chipBg}};color:{{r.chipFg}}">{{r.status}}</span><a href="Livro.dc.html" style="font-weight:600;font-size:14px;min-height:44px;display:inline-flex;align-items:center">{{r.action}}</a></div>
+</div>
+</sc-for>
+</div>
+
+<div style="background:#fff;border:1px solid #D9E0DB;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px">
+<h2 class="h" style="font-size:22px">Histórico de leituras</h2>
+<sc-for list="{{historico}}" as="h" hint-placeholder-count="3">
+<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;padding:12px 0;border-top:1px solid #E4E8E6">
+<span style="font-size:15px"><strong>{{h.title}}</strong> · {{h.author}}</span><span style="font-size:14px;color:#4B5A55">Devolvido em [DATA]</span>
+</div>
+</sc-for>
+</div>
+</section>
+
+<aside style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:24px">
+<div style="background:#E6F0EC;border:1px solid #1F6F5C;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:8px">
+<span style="font-size:13px;font-weight:600;color:#14523F">Próxima troca</span>
+<span class="h" style="font-size:24px">Sábado, [DATA]</span>
+<span style="font-size:15px;color:#14231F">Janela [HORÁRIO] · entrega do próximo livro e coleta do atual.</span>
+<a href="Agendar.dc.html" style="font-weight:600;font-size:15px;min-height:44px;display:inline-flex;align-items:center">Alterar agendamento</a>
+</div>
+
+<div style="background:#fff;border:1px solid #D9E0DB;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:12px">
+<h2 class="h" style="font-size:20px">Plano</h2>
+<span style="font-size:15px">Assinatura mensal · R$ 30,00 · frete incluso</span>
+<span style="font-size:14px;color:#4B5A55">Próxima cobrança em [DATA]</span>
+<span style="font-size:14px;color:#4B5A55">Pagamento: [FORMA]</span>
+</div>
+
+<div style="background:#fff;border:1px solid #D9E0DB;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:12px">
+<h2 class="h" style="font-size:20px">Lembretes de devolução</h2>
+<p style="margin:0;font-size:14px;color:#4B5A55">Como você prefere ser avisado?</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<sc-for list="{{canais}}" as="c" hint-placeholder-count="3">
+<button onClick="{{c.pick}}" style="min-height:44px;padding:0 16px;border-radius:22px;border:1px solid #1F6F5C;background:{{c.bg}};color:{{c.fg}};font-size:14px;font-weight:600;cursor:pointer">{{c.label}}</button>
+</sc-for>
+</div>
+</div>
+
+<div style="background:#fff;border:1px solid #D9E0DB;border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:8px">
+<h2 class="h" style="font-size:20px">Endereço de entrega</h2>
+<span style="font-size:15px;line-height:1.5">[RUA, Nº, COMPLEMENTO]<br>[BAIRRO] · [CEP]</span>
+<span style="font-size:14px;color:#4B5A55">Telefone: [WHATSAPP]</span>
+</div>
+</aside>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1700}}'>
+class Component extends DCLogic {
+constructor(p){ super(p); this.state = {canal:'WhatsApp'}; }
+renderVals() {
+const c = this.state.canal;
+return {
+canais: ['WhatsApp','E-mail','Os dois'].map(l => ({label:l, bg: c===l ? '#1F6F5C' : '#fff', fg: c===l ? '#fff' : '#1F6F5C', pick: () => this.setState({canal:l})})),
+reservas: [
+{title:'Torto Arado', author:'Itamar Vieira Junior', status:'Reservado para você', chipBg:'#DCEFE6', chipFg:'#14523F', action:'Ver livro'},
+{title:'Ensaio sobre a Cegueira', author:'José Saramago', status:'Fila: [Nº]º lugar', chipBg:'#FBE7C8', chipFg:'#5E3700', action:'Sair da fila'}
+],
+historico: [
+{title:'Vidas Secas', author:'Graciliano Ramos'},
+{title:'O Pequeno Príncipe', author:'Antoine de Saint-Exupéry'},
+{title:'Sapiens', author:'Yuval Noah Harari'}
+]
+};
+}
+}
+</script>
+</body>
+</html>
