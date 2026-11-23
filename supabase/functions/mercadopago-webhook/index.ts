@@ -9,6 +9,7 @@ const json = (status: number, body: unknown) =>
   new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json" } });
 const cleanToken = (t: string | undefined) => (t ?? "").trim().replace(/^bearer\s+/i, "").replace(/^"|"$/g, "");
 
+const cut = (v: string | null) => (v ? v.slice(0, 64) : v); // limita o tamanho do que vem da URL antes de gravar no log
 const hex = (buf: ArrayBuffer) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
 
 async function validSignature(req: Request, dataId: string | null, secret: string): Promise<boolean> {
@@ -21,6 +22,10 @@ async function validSignature(req: Request, dataId: string | null, secret: strin
   );
   const ts = parts["ts"], v1 = parts["v1"];
   if (!ts || !v1) return false;
+  // janela de tempo: rejeita avisos muito antigos (o estado real é sempre relido da API do MP)
+  const tsn = Number(ts);
+  if (!Number.isFinite(tsn)) return false;
+  if (Math.abs(Date.now() - (tsn > 1e12 ? tsn : tsn * 1000)) > 60 * 60 * 1000) return false;
   const requestId = req.headers.get("x-request-id");
   let manifest = "";
   if (dataId) manifest += `id:${/^[a-z0-9]+$/i.test(dataId) ? dataId.toLowerCase() : dataId};`;
@@ -46,8 +51,8 @@ Deno.serve(async (req: Request) => {
   const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { auth: { persistSession: false } });
   const url = new URL(req.url);
   const entry: Record<string, unknown> = {
-    topic: url.searchParams.get("type") ?? url.searchParams.get("topic"),
-    data_id: url.searchParams.get("data.id"),
+    topic: cut(url.searchParams.get("type") ?? url.searchParams.get("topic")),
+    data_id: cut(url.searchParams.get("data.id")),
     has_signature: !!req.headers.get("x-signature"),
     has_request_id: !!req.headers.get("x-request-id"),
   };
@@ -66,7 +71,7 @@ Deno.serve(async (req: Request) => {
 
   const dataId = url.searchParams.get("data.id") ?? (body?.data?.id != null ? String(body.data.id) : null);
   const topic: string = body?.type ?? url.searchParams.get("type") ?? url.searchParams.get("topic") ?? "";
-  entry.topic = topic || entry.topic; entry.data_id = dataId;
+  entry.topic = cut(topic) || entry.topic; entry.data_id = cut(dataId);
   const sigOk = await validSignature(req, url.searchParams.get("data.id") ?? dataId, secret);
   entry.sig_ok = sigOk;
   if (!sigOk) return done(401, { error: "invalid_signature" }, "invalid_signature");

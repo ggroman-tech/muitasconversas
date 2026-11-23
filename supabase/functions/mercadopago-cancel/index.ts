@@ -71,6 +71,7 @@ Deno.serve(async (req: Request) => {
     // o MP deixa o e-mail do pagador vazio: preserva o que já está no banco (apply faz coalesce)
     const a = await sb.rpc("apply_mp_preapproval", { p: { ...r.body, id } });
     if (a.error) throw new Error(a.error.message);
+    if (a.data?.result && a.data.result !== "ok") return json(200, { result: "error", reason: "not_applied" }); // cancelado no MP, mas o banco não refletiu: equipe resolve
 
     const { data: after } = await sb.from("subscriptions")
       .select("status,current_period_end,cancel_requested_at").eq("id", sub.id).maybeSingle();

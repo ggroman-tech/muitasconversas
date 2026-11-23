@@ -11,7 +11,9 @@ export type CancelSubscriptionState = { status: "idle" | "ok" | "error"; message
  * O id da assinatura NUNCA vem do navegador: a função usa o JWT da sessão.
  */
 export async function cancelSubscription(
+  /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   _prev: CancelSubscriptionState,
+  /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   _formData: FormData,
 ): Promise<CancelSubscriptionState> {
   if (!(await getAuthUser())) {

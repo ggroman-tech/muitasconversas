@@ -348,6 +348,7 @@ function PlanSection({ a, pay }: { a: MyAccountRow; pay: PaymentInfo }) {
         <p className="muted" role="status">
           Cancelamento solicitado: não haverá novas cobranças
           {a.current_period_end ? ` e seu acesso vai até ${formatDateOnly(a.current_period_end)}` : ""}.
+          {a.current_period_end ? ` Depois dessa data, você poderá assinar de novo.` : ""}
         </p>
       ) : status === "active" || status === "past_due" || status === "pending" ? (
         <CancelSubscriptionForm
