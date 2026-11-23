@@ -325,13 +325,15 @@ function PlanSection({ a }: { a: MyAccountRow }) {
       </dl>
       {status === "pending" ? (
         <p className="muted">
-          Sua assinatura foi criada e aguarda a confirmação do pagamento.
+          Sua assinatura foi criada e aguarda a confirmação do pagamento.{" "}
+          <Link href="/assinar/concluir">Pagar a assinatura</Link>
         </p>
       ) : null}
       {status === "past_due" ? (
         <p className="muted">
           Não identificamos o último pagamento. Assim que for confirmado, sua
-          assinatura volta ao normal.
+          assinatura volta ao normal.{" "}
+          <Link href="/assinar/concluir">Pagar a assinatura</Link>
         </p>
       ) : null}
     </section>

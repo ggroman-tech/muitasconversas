@@ -92,3 +92,28 @@ export async function generateSaturdaysAction(_prev: ActionState, fd: FormData):
         : `${days} ${days === 1 ? "sábado criado" : "sábados criados"} e ${wins} ${wins === 1 ? "janela criada" : "janelas criadas"}.`,
   };
 }
+
+/** Vincular manualmente uma assinatura do Mercado Pago a um cliente: admin/ops. */
+export async function linkMpPreapprovalAction(_prev: ActionState, fd: FormData): Promise<ActionState> {
+  const staff = await getStaff();
+  if (!staff || !canManage(staff.role)) return err("Sem permissão para vincular assinaturas.");
+  const preId = field(fd, "preapproval_id");
+  const customerId = field(fd, "customer_id");
+  if (!/^[A-Za-z0-9_-]{8,64}$/.test(preId)) return err("Assinatura do Mercado Pago inválida.");
+  if (!UUID_RE.test(customerId)) return err("Escolha o cliente.");
+  const supabase = await painelClient();
+  const { data, error } = await supabase.rpc("staff_link_mp_preapproval", { p_preapproval_id: preId, p_customer_id: customerId });
+  if (error) return err(painelErrorMessage(error));
+  const result = (data as { result?: string } | null)?.result;
+  if (result && result !== "ok") {
+    const m: Record<string, string> = {
+      already_linked: "Essa assinatura já está vinculada a um cliente.",
+      no_subscription: "Esse cliente não tem assinatura em aberto.",
+      customer_already_linked: "Esse cliente já tem uma assinatura do Mercado Pago vinculada.",
+      unknown_preapproval: "Assinatura do Mercado Pago não encontrada.",
+    };
+    return err(m[result] ?? "Não foi possível vincular.");
+  }
+  revalidatePath("/painel/assinaturas");
+  return { status: "ok", message: "Assinatura vinculada." };
+}

@@ -6,6 +6,7 @@ import styles from "./painel.module.css";
 
 const ITEMS = [
   { href: "/painel", label: "Rota de sábado", manage: false },
+  { href: "/painel/assinaturas", label: "Assinaturas", manage: true },
   { href: "/painel/atrasos", label: "Atrasos", manage: true },
   { href: "/painel/reservas", label: "Reservas", manage: true },
   { href: "/painel/sabados", label: "Sábados", manage: true },
