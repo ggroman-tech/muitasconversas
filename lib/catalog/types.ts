@@ -34,8 +34,12 @@ const SHOW_AS_IS = new Set([
   "already_reserved", "already_borrowed", "reserve_while_reading_off",
 ]);
 
+export const NO_SUBSCRIPTION_MESSAGE =
+  "Sua assinatura não está ativa. Confirme o pagamento em Minha conta para reservar.";
+
 export function reserveErrorMessage(err: { code?: string; message?: string; details?: string } | null): string {
   if (err?.details === "overdue_blocked") return OVERDUE_MESSAGE;
+  if (err?.details === "no_active_subscription") return NO_SUBSCRIPTION_MESSAGE;
   if (err?.details && SHOW_AS_IS.has(err.details) && err.message) return err.message;
   return "Não foi possível reservar agora. Tente novamente em instantes.";
 }

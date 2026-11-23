@@ -35,7 +35,7 @@ export default function AssinarPage() {
           <li>Trocas aos sábados, das 09h às 14h</li>
           <li>Pedidos e cancelamentos até sexta-feira, às 08h</li>
           <li>Lembretes por e-mail 7, 3 e 1 dia antes da devolução</li>
-          <li>Pagamento por Pix e cartão de crédito</li>
+          <li>Pagamento por cartão de crédito</li>
           <li>Encontros cobrados à parte</li>
         </ul>
         <span className={styles.sumNote}>

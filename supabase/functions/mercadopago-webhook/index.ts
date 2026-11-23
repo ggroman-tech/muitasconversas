@@ -1,11 +1,13 @@
 // Webhook do Mercado Pago (assinaturas). Autenticação: x-signature (HMAC-SHA256) + reconsulta à API oficial.
 // A notificação nunca é confiada: só serve de gatilho; o estado vem de GET na API do Mercado Pago.
+// Toda chamada é registrada em mp_webhook_log (sem corpo/segredos) para depuração. A consulta periódica (mercadopago-sync) é o caminho principal.
 // Env: MERCADOPAGO_ACCESS_TOKEN, MERCADOPAGO_WEBHOOK_SECRET, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY.
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 const MP = "https://api.mercadopago.com";
 const json = (status: number, body: unknown) =>
   new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json" } });
+const cleanToken = (t: string | undefined) => (t ?? "").trim().replace(/^bearer\s+/i, "").replace(/^"|"$/g, "");
 
 const hex = (buf: ArrayBuffer) => [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
 
@@ -41,26 +43,38 @@ async function mpGet(path: string, token: string): Promise<{ status: number; bod
 
 Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return json(405, { error: "method_not_allowed" });
-  const secret = Deno.env.get("MERCADOPAGO_WEBHOOK_SECRET");
-  const token = Deno.env.get("MERCADOPAGO_ACCESS_TOKEN");
-  if (!secret || !token) return json(500, { error: "not_configured" });
-
+  const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { auth: { persistSession: false } });
   const url = new URL(req.url);
+  const entry: Record<string, unknown> = {
+    topic: url.searchParams.get("type") ?? url.searchParams.get("topic"),
+    data_id: url.searchParams.get("data.id"),
+    has_signature: !!req.headers.get("x-signature"),
+    has_request_id: !!req.headers.get("x-request-id"),
+  };
+  const done = async (status: number, body: unknown, outcome: string, detail?: string) => {
+    try { await sb.from("mp_webhook_log").insert({ ...entry, http_status: status, outcome, detail: detail?.slice(0, 500) }); } catch { /* log é best-effort */ }
+    return json(status, body);
+  };
+
+  const secret = Deno.env.get("MERCADOPAGO_WEBHOOK_SECRET");
+  const token = cleanToken(Deno.env.get("MERCADOPAGO_ACCESS_TOKEN"));
+  if (!secret || !token) return done(500, { error: "not_configured" }, "not_configured", `secret=${!!secret} token=${!!token}`);
+
   const raw = await req.text();
   let body: any = {};
-  try { body = raw ? JSON.parse(raw) : {}; } catch { return json(400, { error: "invalid_json" }); }
+  try { body = raw ? JSON.parse(raw) : {}; } catch { return done(400, { error: "invalid_json" }, "invalid_json"); }
 
   const dataId = url.searchParams.get("data.id") ?? (body?.data?.id != null ? String(body.data.id) : null);
-  if (!(await validSignature(req, url.searchParams.get("data.id") ?? dataId, secret))) {
-    return json(401, { error: "invalid_signature" });
-  }
-
   const topic: string = body?.type ?? url.searchParams.get("type") ?? url.searchParams.get("topic") ?? "";
-  if (!dataId) return json(200, { result: "ignored", reason: "missing_data_id" });
+  entry.topic = topic || entry.topic; entry.data_id = dataId;
+  const sigOk = await validSignature(req, url.searchParams.get("data.id") ?? dataId, secret);
+  entry.sig_ok = sigOk;
+  if (!sigOk) return done(401, { error: "invalid_signature" }, "invalid_signature");
 
-  const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { auth: { persistSession: false } });
+  if (!dataId) return done(200, { result: "ignored", reason: "missing_data_id" }, "ignored", "missing_data_id");
+
   const { data: planRow } = await sb.from("settings").select("value").eq("key", "mp_plan_id").maybeSingle();
-  const planId: string | null = planRow?.value ? String(planRow.value) : null;
+  const planId: string | null = planRow?.value ? String(planRow.value).replace(/^"|"$/g, "") : null;
 
   try {
     if (topic === "subscription_preapproval" || topic === "subscription_authorized_payment") {
@@ -68,17 +82,17 @@ Deno.serve(async (req: Request) => {
       let ap: any = null;
       if (topic === "subscription_authorized_payment") {
         const r = await mpGet(`/authorized_payments/${encodeURIComponent(dataId)}`, token);
-        if (r.status === 404) return json(200, { result: "ignored", reason: "authorized_payment_not_found" });
+        if (r.status === 404) return done(200, { result: "ignored", reason: "authorized_payment_not_found" }, "ignored", "authorized_payment_not_found");
         if (r.status !== 200) throw new Error(`authorized_payments ${r.status}`);
         ap = r.body;
         preId = String(ap?.preapproval_id ?? "");
-        if (!preId) return json(200, { result: "ignored", reason: "no_preapproval" });
+        if (!preId) return done(200, { result: "ignored", reason: "no_preapproval" }, "ignored", "no_preapproval");
       }
       const pr = await mpGet(`/preapproval/${encodeURIComponent(preId)}`, token);
-      if (pr.status === 404) return json(200, { result: "ignored", reason: "preapproval_not_found" });
+      if (pr.status === 404) return done(200, { result: "ignored", reason: "preapproval_not_found" }, "ignored", "preapproval_not_found");
       if (pr.status !== 200) throw new Error(`preapproval ${pr.status}`);
       if (planId && pr.body?.preapproval_plan_id !== planId) {
-        return json(200, { result: "ignored", reason: "other_plan" });
+        return done(200, { result: "ignored", reason: "other_plan" }, "ignored", "other_plan");
       }
       const a = await sb.rpc("apply_mp_preapproval", { p: pr.body });
       if (a.error) throw new Error(a.error.message);
@@ -88,12 +102,12 @@ Deno.serve(async (req: Request) => {
         if (b.error) throw new Error(b.error.message);
         result = b.data;
       }
-      return json(200, result ?? { result: "ok" });
+      return done(200, result ?? { result: "ok" }, "applied", JSON.stringify(result ?? {}));
     }
     // payment / subscription_preapproval_plan e outros: reconhecidos; cada cobrança chega por subscription_authorized_payment.
-    return json(200, { result: "ignored", reason: "topic_not_handled", topic });
+    return done(200, { result: "ignored", reason: "topic_not_handled", topic }, "ignored", `topic_not_handled:${topic}`);
   } catch (e) {
     console.error("mercadopago-webhook falhou", (e as Error).message);
-    return json(500, { error: "processing_failed" }); // não-2xx: o Mercado Pago reenvia
+    return done(500, { error: "processing_failed" }, "error", (e as Error).message); // não-2xx: o Mercado Pago reenvia
   }
 });

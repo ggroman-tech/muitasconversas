@@ -47,3 +47,9 @@ node_modules
 /npm
 /*.bat
 /*.zip
+
+# modelo sem segredos pode ir ao GitHub
+!.env.example
+
+# arquivo local de segredos das Edge Functions
+supabase/.env.secrets

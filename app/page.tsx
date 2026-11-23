@@ -7,7 +7,7 @@ import { statusLabel } from "@/lib/catalog/types";
 import { PLAN_PRICE } from "@/lib/plan";
 
 const steps = [
-  { title: "Assine", text: "Cadastre-se com seu endereço na Zona Sul e pague " + PLAN_PRICE + " a cada 30 dias, por Pix ou cartão de crédito. O frete já está incluso." },
+  { title: "Assine", text: "Cadastre-se com seu endereço na Zona Sul e pague " + PLAN_PRICE + " a cada 30 dias, no cartão de crédito. O frete já está incluso." },
   { title: "Escolha e reserve", text: "Navegue pelo catálogo, veja o que está disponível e reserve. Se o livro estiver emprestado, entre na fila." },
   { title: "Receba em casa", text: "Entregamos o livro no seu endereço, no sábado de troca, entre 09h e 14h." },
   { title: "Troque aos sábados", text: "Fique com o livro por até 28 dias corridos ou troque aos sábados. Na troca, devolvemos o anterior e você recebe o próximo na mesma visita." },
@@ -23,7 +23,7 @@ const faq = [
   { q: "Onde vocês entregam?", a: "Na Zona Sul do Rio, de Leme a São Conrado. Você informa o CEP na assinatura." },
   { q: "Como sou lembrado de devolver?", a: "Por e-mail, 7, 3 e 1 dia antes do fim do prazo. Pedidos e cancelamentos fecham na sexta-feira, às 08h." },
   { q: "E se eu atrasar?", a: "Não há multa, mas enquanto o livro estiver atrasado você não reserva nem recebe outro até devolvê-lo." },
-  { q: "Como pago?", a: "Por Pix e cartão de crédito. Assinatura de 30 dias por " + PLAN_PRICE + ", com frete incluso." },
+  { q: "Como pago?", a: "No cartão de crédito. Assinatura de 30 dias por " + PLAN_PRICE + ", com frete incluso." },
   { q: "Os encontros estão incluídos?", a: "Não. Os encontros presenciais são cobrados à parte e, por enquanto, só para assinantes." },
 ];
 

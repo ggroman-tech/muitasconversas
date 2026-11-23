@@ -187,7 +187,7 @@ export function SignupForm({ email, config }: { email: string; config: SignupCon
           {pending ? "Enviando…" : "Criar minha assinatura"}
         </button>
         <p className={styles.hint} style={{ marginTop: 8 }}>
-          O pagamento é feito em seguida, por Pix ou cartão de crédito (em breve).
+          O pagamento é feito em seguida, por cartão de crédito, no Mercado Pago.
         </p>
       </div>
     </form>

@@ -9,7 +9,22 @@ export async function middleware(request: NextRequest) {
   const { response, user } = await updateSession(request);
   const { pathname, search } = request.nextUrl;
 
-  const protectedPath = ["/conta", "/agendar", "/painel"].some((p) => pathname === p || pathname.startsWith(`${p}/`));
+  // Retorno do Mercado Pago em QUALQUER rota (?preapproval_id=...): leva para a página oficial de retorno,
+  // preservando o parâmetro (se não houver login, o /entrar devolve para cá depois).
+  const mpId = request.nextUrl.searchParams.get("preapproval_id");
+  if (mpId && /^[A-Za-z0-9_-]{8,64}$/.test(mpId) && pathname !== "/assinar/concluir") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/assinar/concluir";
+    url.search = "";
+    url.searchParams.set("preapproval_id", mpId);
+    const redirect = NextResponse.redirect(url);
+    for (const c of response.cookies.getAll()) redirect.cookies.set(c);
+    return redirect;
+  }
+
+  const protectedPath = ["/conta", "/agendar", "/painel", "/assinar/concluir"].some(
+    (p) => pathname === p || pathname.startsWith(`${p}/`),
+  );
   if (!user && protectedPath) {
     const url = request.nextUrl.clone();
     url.pathname = "/entrar";
@@ -24,5 +39,13 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/conta/:path*", "/agendar/:path*", "/assinar/:path*", "/entrar", "/painel/:path*"],
+  matcher: [
+    "/conta/:path*",
+    "/agendar/:path*",
+    "/assinar/:path*",
+    "/entrar",
+    "/painel/:path*",
+    // qualquer outra rota, só quando o Mercado Pago devolve ?preapproval_id=
+    { source: "/((?!_next/|api/|.*\\..*).*)", has: [{ type: "query", key: "preapproval_id" }] },
+  ],
 };

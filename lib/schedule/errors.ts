@@ -13,7 +13,7 @@ const MESSAGES: Record<string, string> = {
   already_scheduled: "Você já tem uma visita agendada neste sábado. Cancele em Minha conta para agendar de novo.",
   window_full: "Esta janela está lotada. Escolha outra.",
   nothing_to_do: "Não há entrega nem coleta para agendar agora.",
-  no_active_subscription: "É preciso ter uma assinatura ativa para agendar.",
+  no_active_subscription: "É preciso ter uma assinatura ativa para agendar. Confirme o pagamento em Minha conta.",
   overdue_blocked:
     "Devolva o livro em atraso para voltar a receber livros. Você ainda pode agendar a coleta dele.",
   config_pending: "O agendamento está temporariamente indisponível. Tente novamente mais tarde.",

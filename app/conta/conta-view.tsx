@@ -1,8 +1,7 @@
 import Link from "next/link";
-import type {
-  MyAccountRow,
-  SubscriptionStatus,
-} from "@/lib/auth/database.types";
+import { VerifyPayment } from "@/app/assinar/verify-payment";
+import { deriveSubscriptionState, type PaymentInfo } from "@/lib/assinatura/state";
+import type { MyAccountRow } from "@/lib/auth/database.types";
 import {
   formatBRL,
   formatDate,
@@ -12,15 +11,8 @@ import {
   formatWeekday,
 } from "@/lib/auth/format";
 import { CancelVisitForm } from "./cancel-visit-form";
+import { CancelSubscriptionForm } from "./cancel-subscription-form";
 import styles from "./conta.module.css";
-
-const STATUS: Record<SubscriptionStatus, string> = {
-  pending: "Aguardando pagamento",
-  active: "Ativa",
-  past_due: "Pagamento em atraso",
-  paused: "Pausada",
-  canceled: "Cancelada",
-};
 
 const LOAN_STATUS: Record<string, string> = {
   scheduled: "Entrega agendada",
@@ -50,10 +42,25 @@ function daysLeftText(n: number): string {
 }
 
 /** Tela "Minha conta" (apresentação pura, a partir da linha da view my_account). */
-export function ContaView({ a }: { a: MyAccountRow }) {
+export function ContaView({ a, pay = null }: { a: MyAccountRow; pay?: PaymentInfo }) {
   return (
     <div className={styles.page}>
       <h1 className="h page-title">Olá, {a.full_name.split(" ")[0]}</h1>
+      {(() => {
+        const st = deriveSubscriptionState({
+          status: a.subscription_status,
+          currentPeriodEnd: a.current_period_end,
+          payment: pay,
+        });
+        return st.hasAccess || st.key === "none" || st.key === "canceled" || st.key === "paused" ? null : (
+          <div role="status" className={`alert ${styles.alertBox}`}>
+            <p>
+              <strong>{st.label}.</strong> Enquanto a assinatura não estiver ativa, não dá para reservar livros nem
+              agendar entregas.
+            </p>
+          </div>
+        );
+      })()}
       {a.blocked_by_overdue ? (
         <div role="alert" className={`alert ${styles.alertBox}`}>
           <p>
@@ -74,7 +81,7 @@ export function ContaView({ a }: { a: MyAccountRow }) {
         </div>
         <aside className={styles.aside} aria-label="Resumo da conta">
           <VisitSection a={a} />
-          <PlanSection a={a} />
+          <PlanSection a={a} pay={pay} />
           <RemindersSection a={a} />
           <AddressSection a={a} />
           <DataSection a={a} />
@@ -294,8 +301,13 @@ function VisitSection({ a }: { a: MyAccountRow }) {
   );
 }
 
-function PlanSection({ a }: { a: MyAccountRow }) {
+function PlanSection({ a, pay }: { a: MyAccountRow; pay: PaymentInfo }) {
   const status = a.subscription_status;
+  const st = deriveSubscriptionState({
+    status,
+    currentPeriodEnd: a.current_period_end,
+    payment: pay,
+  });
   return (
     <section className={`card ${styles.panelSm}`} aria-labelledby="plano">
       <h2 id="plano" className={`h ${styles.h2sm}`}>
@@ -304,15 +316,13 @@ function PlanSection({ a }: { a: MyAccountRow }) {
       <dl className={styles.dl}>
         <dt>Situação</dt>
         <dd>
-          <span className="badge">
-            {status ? STATUS[status] : "Sem assinatura"}
-          </span>
+          <span className={`badge ${st.hasAccess ? "" : "badge-warn"}`}>{st.label}</span>
         </dd>
         <dt>Valor</dt>
         <dd>{formatBRL(a.plan_price_cents)} a cada 30 dias</dd>
-        {a.current_period_end ? (
+        {a.current_period_end && st.key !== "awaiting_payment" && st.key !== "verifying" ? (
           <>
-            <dt>Pago até</dt>
+            <dt>{st.key === "active" ? "Válida até" : "Pago até"}</dt>
             <dd>{formatDateOnly(a.current_period_end)}</dd>
           </>
         ) : null}
@@ -323,18 +333,26 @@ function PlanSection({ a }: { a: MyAccountRow }) {
           </>
         ) : null}
       </dl>
-      {status === "pending" ? (
-        <p className="muted">
-          Sua assinatura foi criada e aguarda a confirmação do pagamento.{" "}
-          <Link href="/assinar/concluir">Pagar a assinatura</Link>
+      {st.key !== "active" ? <p className="muted">{st.description}</p> : null}
+      {st.canPay ? (
+        <p>
+          <Link href="/assinar/concluir" className="btn">
+            {st.key === "canceled" ? "Assinar de novo" : "Pagar a assinatura"}
+          </Link>
         </p>
       ) : null}
-      {status === "past_due" ? (
-        <p className="muted">
-          Não identificamos o último pagamento. Assim que for confirmado, sua
-          assinatura volta ao normal.{" "}
-          <Link href="/assinar/concluir">Pagar a assinatura</Link>
+      {st.canVerify ? (
+        <VerifyPayment auto buttonClass="btn2" textClass="muted" />
+      ) : null}
+      {pay?.cancel_requested_at && status !== "canceled" ? (
+        <p className="muted" role="status">
+          Cancelamento solicitado: não haverá novas cobranças
+          {a.current_period_end ? ` e seu acesso vai até ${formatDateOnly(a.current_period_end)}` : ""}.
         </p>
+      ) : status === "active" || status === "past_due" || status === "pending" ? (
+        <CancelSubscriptionForm
+          accessUntil={status === "active" && a.current_period_end ? formatDateOnly(a.current_period_end) : null}
+        />
       ) : null}
     </section>
   );

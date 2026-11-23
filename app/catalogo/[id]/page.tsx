@@ -8,6 +8,7 @@ import { BookCover } from "@/lib/catalog/cover";
 import { reservar } from "./actions";
 import s from "../catalogo.module.css";
 import { PLAN_PRICE } from "@/lib/plan";
+import { deriveSubscriptionState, type DbSubscriptionStatus } from "@/lib/assinatura/state";
 
 type Props = { params: Promise<{ id: string }>; searchParams: Promise<{ erro?: string; ok?: string }> };
 
@@ -36,7 +37,13 @@ async function LivroConteudo({ params, searchParams }: Props) {
   const sb = await catalogClient();
   const { data: { user } } = await sb.auth.getUser();
   let emAtraso = false;
+  let acesso: ReturnType<typeof deriveSubscriptionState> | null = null;
   if (user) {
+    const { data: conta } = await sb.from("my_account").select("subscription_status,current_period_end").maybeSingle();
+    acesso = deriveSubscriptionState({
+      status: (conta?.subscription_status ?? null) as DbSubscriptionStatus | null,
+      currentPeriodEnd: conta?.current_period_end ?? null,
+    });
     const { data: atrasos } = await sb.from("loans").select("id").eq("status", "overdue").limit(1);
     emAtraso = (atrasos?.length ?? 0) > 0;
   }
@@ -88,7 +95,21 @@ async function LivroConteudo({ params, searchParams }: Props) {
             ))}
           </dl>
 
-          {emAtraso ? (
+          {acesso && !acesso.hasAccess ? (
+            <div role="alert" className={`alert ${s.alertBox}`}>
+              <p>
+                {acesso.key === "none"
+                  ? "Para reservar, conclua o seu cadastro de assinante."
+                  : `Sua assinatura não está ativa (${acesso.label.toLowerCase()}), por isso não dá para reservar agora.`}
+              </p>
+              <div className="row">
+                <Link className="btn" href={acesso.key === "none" ? "/assinar" : "/assinar/concluir"}>
+                  {acesso.key === "none" ? "Concluir cadastro" : acesso.canPay ? "Pagar a assinatura" : "Ver minha assinatura"}
+                </Link>
+                <Link className="btn2" href="/conta">Minha conta</Link>
+              </div>
+            </div>
+          ) : emAtraso ? (
             <p role="alert" className={`alert ${s.alertBox}`}>{OVERDUE_MESSAGE}</p>
           ) : (
             !sp.ok && (

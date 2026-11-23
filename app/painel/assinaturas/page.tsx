@@ -32,6 +32,7 @@ export default async function AssinaturasPage() {
   const rows = ((subsRes.data ?? []) as SubRow[]).sort((a, b) => ORDER.indexOf(a.status) - ORDER.indexOf(b.status));
   const unlinked = (unlinkedRes.data ?? []) as Unlinked[];
   const count = (s: string) => rows.filter((r) => r.status === s).length;
+  const emAnalise = rows.filter((r) => r.status === "pending" && r.mp_preapproval_id);
   const openCustomers = rows
     .filter((r) => r.status !== "canceled" && !r.mp_preapproval_id)
     .map((r) => ({ id: r.customer_id, label: `${r.full_name} (${r.email})` }));
@@ -40,12 +41,26 @@ export default async function AssinaturasPage() {
     <>
       <h1 className={styles.h1}>Assinaturas</h1>
       <p className={styles.lead}>
-        {count("active")} ativas · {count("pending")} aguardando pagamento · {count("past_due")} em atraso ·{" "}
+        {count("active")} ativas · {count("pending")} aguardando pagamento ({emAnalise.length} em análise) · {count("past_due")} em atraso ·{" "}
         {count("canceled")} canceladas. O acesso para reservar vale só para assinaturas ativas dentro do período pago.
       </p>
 
+      {unlinked.length > 0 || emAnalise.length > 0 ? (
+        <p role="alert" className={styles.errorBox} style={{ marginBottom: "1rem" }}>
+          Atenção:{" "}
+          {unlinked.length > 0
+            ? `${unlinked.length} ${unlinked.length === 1 ? "pagamento sem cliente" : "pagamentos sem cliente"} (vincule abaixo)`
+            : ""}
+          {unlinked.length > 0 && emAnalise.length > 0 ? " · " : ""}
+          {emAnalise.length > 0
+            ? `${emAnalise.length} ${emAnalise.length === 1 ? "assinatura em análise" : "assinaturas em análise"} (paga no Mercado Pago, aguardando confirmação)`
+            : ""}
+          .
+        </p>
+      ) : null}
+
       {unlinked.length > 0 ? (
-        <section aria-labelledby="sem-vinculo">
+        <section aria-labelledby="sem-vinculo" style={{ borderLeft: "4px solid #b45309", paddingLeft: "1rem", marginBottom: "1.5rem" }}>
           <h2 id="sem-vinculo" className={styles.h1}>Pagamentos sem cliente</h2>
           <p className={styles.lead}>
             O Mercado Pago confirmou estas assinaturas, mas o e-mail usado no pagamento não bate com nenhum cadastro. Vincule ao cliente certo.
@@ -91,7 +106,11 @@ export default async function AssinaturasPage() {
                       {r.email}
                       {wa ? <> · <a href={wa}>WhatsApp</a></> : null}
                     </td>
-                    <td>{STATUS[r.status] ?? r.status}</td>
+                    <td>
+                      {r.status === "pending" && r.mp_preapproval_id
+                        ? <strong>Em análise</strong>
+                        : STATUS[r.status] ?? r.status}
+                    </td>
                     <td>
                       {r.current_period_end ? formatDateOnly(r.current_period_end) : "—"}
                       {r.status === "active" && r.days_left != null ? ` (${r.days_left} d)` : ""}

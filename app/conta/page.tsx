@@ -5,6 +5,7 @@ import {
   createSupabaseServerClient,
   getAuthUser,
 } from "@/lib/auth/supabase-server";
+import { getPaymentInfo } from "@/lib/assinatura/server";
 import { ContaView } from "./conta-view";
 
 export const metadata: Metadata = { title: "Minha conta — Muitas Conversas" };
@@ -44,5 +45,6 @@ async function Conta() {
   }
   if (!a) redirect("/assinar");
 
-  return <ContaView a={a} />;
+  const pay = a.subscription_status === "active" ? null : await getPaymentInfo(supabase);
+  return <ContaView a={a} pay={pay} />;
 }

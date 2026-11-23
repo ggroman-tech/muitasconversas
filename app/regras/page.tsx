@@ -32,7 +32,7 @@ const areas = [
 ];
 
 const fluxos = [
-  { name: "Assinar", path: "Início → Assinar → confirmar e-mail → dados e endereço → aceite das regras → pagamento por Pix ou cartão de crédito → Minha conta" },
+  { name: "Assinar", path: "Início → Assinar → confirmar e-mail → dados e endereço → aceite das regras → pagamento por cartão de crédito → Minha conta" },
   { name: "Reservar", path: "Catálogo → Livro → Reservar (ou entrar na fila) → confirmação → entrega no sábado de troca" },
   { name: "Devolver ou trocar", path: "Minha conta → Agendar → confirmação por e-mail. Pedidos e cancelamentos fecham na sexta-feira, às 08h." },
   { name: "Lembrete", path: "7, 3 e 1 dia antes do prazo: aviso por e-mail com link direto para Agendar" },
@@ -49,7 +49,7 @@ const regras = [
     q: "Área de entrega",
     a: "Zona Sul do Rio: Leme/Copacabana; Glória/Catete/Flamengo/Laranjeiras; Botafogo/Humaitá/Urca; Ipanema/Arpoador/Leblon; Lagoa/Jardim Botânico/Gávea; São Conrado.",
   },
-  { q: "Pagamento", a: "Por Pix e cartão de crédito." },
+  { q: "Pagamento", a: "No cartão de crédito." },
   { q: "Encontros presenciais", a: "Só para assinantes e cobrados à parte." },
   { q: "Dados pessoais", a: "Nome, endereço e WhatsApp são usados só para prestar o serviço, com seu consentimento (LGPD)." },
 ];
