@@ -7,6 +7,7 @@ import { OVERDUE_MESSAGE, statusLabel } from "@/lib/catalog/types";
 import { BookCover } from "@/lib/catalog/cover";
 import { reservar } from "./actions";
 import s from "../catalogo.module.css";
+import { PLAN_PRICE } from "@/lib/plan";
 
 type Props = { params: Promise<{ id: string }>; searchParams: Promise<{ erro?: string; ok?: string }> };
 
@@ -95,8 +96,8 @@ async function LivroConteudo({ params, searchParams }: Props) {
                 <h2>{user ? (disponivel ? "Reservar este livro" : "Entrar na fila de espera") : "Reserve este livro"}</h2>
                 <p>
                   {disponivel
-                    ? "Entrega em casa, com frete incluso na assinatura de 30 dias (R$ 30). Depois da reserva, escolha a troca de sábado (09h às 14h; pedidos fecham na sexta-feira, às 08h). Você fica com o livro por até 28 dias corridos, um por vez, ou troca aos sábados."
-                    : "Avisamos quando chegar a sua vez. Frete incluso na assinatura de 30 dias (R$ 30); um livro por vez, por até 28 dias corridos ou troca aos sábados (09h às 14h)."}
+                    ? "Entrega em casa, com frete incluso na assinatura de 30 dias (" + PLAN_PRICE + "). Depois da reserva, escolha a troca de sábado (09h às 14h; pedidos fecham na sexta-feira, às 08h). Você fica com o livro por até 28 dias corridos, um por vez, ou troca aos sábados."
+                    : "Avisamos quando chegar a sua vez. Frete incluso na assinatura de 30 dias (" + PLAN_PRICE + "); um livro por vez, por até 28 dias corridos ou troca aos sábados (09h às 14h)."}
                 </p>
                 <div className="row">
                   <form action={reservar.bind(null, book.id)}>

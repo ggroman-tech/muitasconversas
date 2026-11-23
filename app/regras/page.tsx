@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "./regras.module.css";
+import { PLAN_PRICE } from "@/lib/plan";
 
 export const metadata: Metadata = { title: "Regras e mapa do site" };
 
@@ -38,7 +39,7 @@ const fluxos = [
 ];
 
 const regras = [
-  { q: "Preço e frete", a: "R$ 30 por assinatura de 30 dias, com frete incluso." },
+  { q: "Preço e frete", a: PLAN_PRICE + " por assinatura de 30 dias, com frete incluso." },
   { q: "Livros por assinante", a: "Um livro por vez." },
   { q: "Prazo e renovação", a: "Um livro por vez, por até 28 dias corridos ou troca aos sábados. Não há renovação automática." },
   { q: "Dia e horário de troca", a: "Trocas aos sábados, das 09h às 14h. Pedidos e cancelamentos fecham na sexta-feira, às 08h." },

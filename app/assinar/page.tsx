@@ -6,6 +6,7 @@ import { LoginForm } from "@/lib/auth/login-form";
 import { createSupabaseServerClient, getAuthUser } from "@/lib/auth/supabase-server";
 import styles from "@/lib/auth/ui.module.css";
 import { SignupForm } from "./signup-form";
+import { PLAN_PRICE_FULL } from "@/lib/plan";
 
 export const metadata: Metadata = { title: "Assinar — Muitas Conversas" };
 
@@ -22,7 +23,7 @@ export default function AssinarPage() {
         <h2 id="resumo-titulo" className={styles.h2}>Resumo</h2>
         <div className={styles.sumRow}>
           <span>Assinatura de 30 dias</span>
-          <strong>R$ 30,00</strong>
+          <strong>{PLAN_PRICE_FULL}</strong>
         </div>
         <div className={styles.sumRow}>
           <span>Frete</span>
