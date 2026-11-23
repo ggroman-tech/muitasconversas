@@ -6,6 +6,8 @@ export type CatalogBook = {
   publisher: string | null;
   published_year: number | null;
   genres: string[];
+  genre: string | null;
+  condition: string | null;
   description: string | null;
   cover_url: string | null;
   copies_available: number;

@@ -1,13 +1,13 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { listGenres, searchCatalog, PAGE_SIZE } from "@/lib/catalog/query";
+import { listConditions, listGenres, searchCatalog, PAGE_SIZE } from "@/lib/catalog/query";
 import { statusLabel, type Availability } from "@/lib/catalog/types";
 import { BookCover } from "@/lib/catalog/cover";
 import s from "./catalogo.module.css";
 
 export const metadata = { title: "Catálogo" };
 
-type SP = { q?: string; genero?: string; disp?: string; p?: string };
+type SP = { q?: string; genero?: string; cons?: string; disp?: string; p?: string };
 
 export default function CatalogoPage({ searchParams }: { searchParams: Promise<SP> }) {
   return (
@@ -33,17 +33,20 @@ const DISP_OPTIONS: { value: Availability; label: string }[] = [
 async function CatalogoConteudo({ searchParams }: { searchParams: Promise<SP> }) {
   const sp = await searchParams;
   const disp: Availability = sp.disp === "disponiveis" || sp.disp === "fila" ? sp.disp : "todos";
-  const [{ books, total, page }, genres] = await Promise.all([
-    searchCatalog({ q: sp.q, genre: sp.genero, disp, page: Number(sp.p) || 1 }),
+  const [{ books, total, page }, genres, conditions] = await Promise.all([
+    searchCatalog({ q: sp.q, genre: sp.genero, condition: sp.cons, disp, page: Number(sp.p) || 1 }),
     listGenres(),
+    listConditions(),
   ]);
   const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-  const href = (p: number, over: { genero?: string; disp?: Availability } = {}) => {
+  const href = (p: number, over: { genero?: string; cons?: string; disp?: Availability } = {}) => {
     const genero = "genero" in over ? over.genero : sp.genero;
+    const cons = "cons" in over ? over.cons : sp.cons;
     const d = "disp" in over ? over.disp : disp;
     const u = new URLSearchParams();
     if (sp.q) u.set("q", sp.q);
     if (genero) u.set("genero", genero);
+    if (cons) u.set("cons", cons);
     if (d && d !== "todos") u.set("disp", d);
     if (p > 1) u.set("p", String(p));
     return `/catalogo${u.size ? `?${u}` : ""}`;
@@ -63,6 +66,7 @@ async function CatalogoConteudo({ searchParams }: { searchParams: Promise<SP> })
 
       <form className={s.search} action="/catalogo" method="get" role="search">
         {sp.genero && <input type="hidden" name="genero" value={sp.genero} />}
+        {sp.cons && <input type="hidden" name="cons" value={sp.cons} />}
         {disp !== "todos" && <input type="hidden" name="disp" value={disp} />}
         <div className={`field ${s.searchField}`}>
           <label htmlFor="busca" className={s.searchLabel}>Buscar por título, autor ou assunto</label>
@@ -84,12 +88,25 @@ async function CatalogoConteudo({ searchParams }: { searchParams: Promise<SP> })
         </div>
         {genres.length > 0 && (
           <div className={s.group}>
-            <span className={s.groupLabel} id="g-gen">Tags</span>
+            <span className={s.groupLabel} id="g-gen">Gênero</span>
             <div className={s.chips} role="group" aria-labelledby="g-gen">
               <Link href={href(1, { genero: undefined })} className={chipCls(!sp.genero)} aria-current={!sp.genero ? "true" : undefined}>Todos</Link>
               {genres.map((g) => (
                 <Link key={g} href={href(1, { genero: g })} className={chipCls(sp.genero === g)} aria-current={sp.genero === g ? "true" : undefined}>
                   {g}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+        {conditions.length > 0 && (
+          <div className={s.group}>
+            <span className={s.groupLabel} id="g-cons">Conservação</span>
+            <div className={s.chips} role="group" aria-labelledby="g-cons">
+              <Link href={href(1, { cons: undefined })} className={chipCls(!sp.cons)} aria-current={!sp.cons ? "true" : undefined}>Todas</Link>
+              {conditions.map((c) => (
+                <Link key={c} href={href(1, { cons: c })} className={chipCls(sp.cons === c)} aria-current={sp.cons === c ? "true" : undefined}>
+                  {c}
                 </Link>
               ))}
             </div>
@@ -113,7 +130,7 @@ async function CatalogoConteudo({ searchParams }: { searchParams: Promise<SP> })
           ))}
         </ul>
       ) : (
-        <p className={s.empty}>Nenhum livro com esses filtros. Tente outra tag ou veja todos.</p>
+        <p className={s.empty}>Nenhum livro com esses filtros. Tente outro filtro ou veja todos.</p>
       )}
 
       {pages > 1 && (

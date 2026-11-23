@@ -55,6 +55,7 @@ async function LivroConteudo({ params, searchParams }: Props) {
   if (book.publisher) meta.push(["Editora", book.publisher]);
   if (book.published_year) meta.push(["Ano", String(book.published_year)]);
   if (book.isbn13) meta.push(["ISBN", book.isbn13]);
+  if (book.condition) meta.push(["Conservação", book.condition]);
   meta.push(["Exemplares", `${book.copies_available} ${book.copies_available === 1 ? "disponível" : "disponíveis"}`]);
 
   return (
@@ -68,7 +69,7 @@ async function LivroConteudo({ params, searchParams }: Props) {
 
         <div className={s.info}>
           <div className={s.titleBlock}>
-            {book.genres.length > 0 && <span className={s.eyebrow}>{book.genres.join(", ")}</span>}
+            {book.genre && <span className={s.eyebrow}>{book.genre}</span>}
             <h1 className={`h ${s.bookH1}`}>{book.title}</h1>
             <span className={s.authors}>{book.authors.join(", ")}</span>
           </div>
