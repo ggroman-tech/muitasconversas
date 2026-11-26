@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Suspense, type ReactNode } from "react";
 import { signOut } from "@/lib/auth/actions";
 import { getAuthUser } from "@/lib/auth/supabase-server";
-import { canManage, getStaff } from "@/lib/painel/db";
+import { canManage, getMfaState, getStaffRole, painelLocalEnabled } from "@/lib/painel/db";
 import { PainelNav } from "./nav";
 import styles from "./painel.module.css";
 
@@ -23,9 +23,12 @@ export default function PainelLayout({ children }: { children: ReactNode }) {
 }
 
 async function Guarded({ children }: { children: ReactNode }) {
-  if (!(await getAuthUser())) redirect("/entrar?next=/painel");
-  const staff = await getStaff();
+  const user = await getAuthUser();
+  if (!painelLocalEnabled()) notFound();
+  if (!user) redirect("/entrar?next=/painel");
+  const staff = await getStaffRole();
   if (!staff) redirect("/conta");
+  if ((await getMfaState()) !== "aal2") redirect("/mfa?next=/painel");
 
   return (
     <div className={styles.wrap}>

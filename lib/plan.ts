@@ -1,7 +1,6 @@
 /**
- * Preço exibido da assinatura. ATENÇÃO: valor de TESTE (plano de R$ 1 do Mercado Pago).
- * Para o lançamento: voltar para "R$ 30" / "R$ 30,00", ajustar settings.plan_price_cents para 3000
- * e trocar o plano em settings.mp_plan_id.
+ * Preço exibido da assinatura (plano mensal real do Mercado Pago): R$ 45,00 por mês (cobrança mensal recorrente).
+ * Deve bater com settings.plan_price_cents (4500) e com o valor do plano em settings.mp_plan_id.
  */
-export const PLAN_PRICE = "R$ 1";
-export const PLAN_PRICE_FULL = "R$ 1,00";
+export const PLAN_PRICE = "R$ 45";
+export const PLAN_PRICE_FULL = "R$ 45,00";

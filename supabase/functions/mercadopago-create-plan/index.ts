@@ -61,6 +61,9 @@ Deno.serve(async (req: Request) => {
   // settings.value é jsonb: grava o texto direto (vira um jsonb string), sem aspas extras
   const up = await sb.from("settings").update({ value: planId }).eq("key", "mp_plan_id");
   if (up.error) return json(500, { error: "settings_update_failed", plan_id: planId, detail: up.error.message });
+  // L4 (Financeiro): grava o preço exibido junto com o plano, para site e Mercado Pago nunca divergirem.
+  const upPrice = await sb.from("settings").update({ value: Math.round(amount * 100) }).eq("key", "plan_price_cents");
+  if (upPrice.error) return json(500, { error: "price_update_failed", plan_id: planId, detail: upPrice.error.message });
 
   return json(200, { ok: true, test_account: isTest, mp_user_id: me.body?.id ?? null, plan_id: planId, init_point: created.body?.init_point ?? null, amount });
 });

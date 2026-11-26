@@ -12,6 +12,10 @@ export type PaymentInfo = {
   last_payment_at?: string | null;
   /** Quando o cliente pediu o cancelamento (acesso segue até o fim do período pago). */
   cancel_requested_at?: string | null;
+  /** Política de reembolso: true se um cancelamento agora seria reembolsado (1ª assinatura, até 7 dias da 1ª cobrança). */
+  refund_eligible?: boolean | null;
+  /** Último dia (yyyy-mm-dd) em que o cancelamento ainda é reembolsado; null se não elegível. */
+  refund_until?: string | null;
 } | null;
 
 export type SubscriptionStateKey =
@@ -132,7 +136,7 @@ export function deriveSubscriptionState(input: {
         key: "past_due",
         label: "Pagamento em atraso",
         description:
-          "Não identificamos o último pagamento. Enquanto isso, não dá para reservar nem agendar. Se você já pagou, use “Já paguei, verificar agora”.",
+          "Não identificamos o pagamento deste mês, mesmo depois dos 3 dias de carência. Enquanto isso, não dá para reservar nem agendar. Se você já pagou, use “Já paguei, verificar agora”.",
         hasAccess: false,
         canPay: true,
         canVerify: true,

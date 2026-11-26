@@ -15,6 +15,7 @@
 
 # next.js
 /.next/
+/.next-painel/
 /out/
 
 # production
@@ -53,3 +54,6 @@ node_modules
 
 # arquivo local de segredos das Edge Functions
 supabase/.env.secrets
+
+# arquivos removidos aguardando exclusão manual
+_to_delete/

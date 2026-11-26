@@ -22,7 +22,7 @@ export default function AssinarPage() {
       <aside className={styles.summary} aria-labelledby="resumo-titulo">
         <h2 id="resumo-titulo" className={styles.h2}>Resumo</h2>
         <div className={styles.sumRow}>
-          <span>Assinatura de 30 dias</span>
+          <span>Assinatura mensal</span>
           <strong>{PLAN_PRICE_FULL}</strong>
         </div>
         <div className={styles.sumRow}>

@@ -186,7 +186,7 @@ export function SignupForm({ email, config }: { email: string; config: SignupCon
         <details className={styles.details}>
           <summary>Resumo das regras</summary>
           <ul className={styles.list} style={{ marginTop: 8 }}>
-            <li>Assinatura de 30 dias: {formatBRL(config.plan_price_cents)}.</li>
+            <li>Assinatura mensal: {formatBRL(config.plan_price_cents)} por mês.</li>
             <li>
               {config.max_open_loans === 1
                 ? "Um livro por vez, "

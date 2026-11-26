@@ -7,7 +7,16 @@ import styles from "./conta.module.css";
 const initial: CancelSubscriptionState = { status: "idle" };
 
 /** Confirmação simples via <details> (sem diálogo bloqueante de JS). */
-export function CancelSubscriptionForm({ accessUntil }: { accessUntil?: string | null }) {
+export function CancelSubscriptionForm({
+  accessUntil,
+  refundEligible,
+  refundUntil,
+}: {
+  accessUntil?: string | null;
+  /** true: o cancelamento agora é reembolsado (1ª assinatura, até 7 dias da 1ª cobrança); false/undefined: não. */
+  refundEligible?: boolean | null;
+  refundUntil?: string | null;
+}) {
   const [state, action, pending] = useActionState(cancelSubscription, initial);
 
   return (
@@ -30,15 +39,26 @@ export function CancelSubscriptionForm({ accessUntil }: { accessUntil?: string |
             </p>
             <ul style={{ margin: "0 0 12px 18px" }}>
               <li>A cobrança é interrompida agora: não haverá novas cobranças.</li>
-              <li>
-                {accessUntil
-                  ? `Você continua com acesso (reservas, fila e trocas) até ${accessUntil}.`
-                  : "Sua assinatura será encerrada agora."}
-              </li>
-              {/* POLÍTICA DE REEMBOLSO: A DEFINIR PELO GABRIEL. Hoje o texto abaixo diz que NÃO há reembolso do período já pago;
-                  se a decisão for outra (ex.: proporcional), ajustar aqui e em app/regras. */}
-              <li>O período já pago não é reembolsado.</li>
-              <li>Reservas que ainda estiverem na fila nessa data serão canceladas.</li>
+              {refundEligible ? (
+                <>
+                  <li>
+                    <strong>Você está no prazo de 7 dias da primeira cobrança{refundUntil ? ` (até ${refundUntil})` : ""}:</strong> devolvemos o
+                    valor pago por inteiro.
+                  </li>
+                  <li>Nesse caso o acesso termina agora, e as reservas na fila são canceladas.</li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    {accessUntil
+                      ? `Você continua com acesso (reservas, fila e trocas) até ${accessUntil}.`
+                      : "Sua assinatura será encerrada agora."}
+                  </li>
+                  {/* POLÍTICA DE REEMBOLSO: integral só na 1ª assinatura, em até 7 dias da 1ª cobrança (refundEligible). */}
+                  <li>O período já pago não é reembolsado (o reembolso vale só na primeira assinatura, em até 7 dias da primeira cobrança).</li>
+                </>
+              )}
+              {refundEligible ? null : <li>Reservas que ainda estiverem na fila nessa data serão canceladas.</li>}
               <li>Para voltar depois, é só assinar de novo, a qualquer momento após o fim do período.</li>
             </ul>
             <button type="submit" className="btn-danger" disabled={pending} aria-busy={pending}>

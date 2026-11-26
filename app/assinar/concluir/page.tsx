@@ -76,7 +76,7 @@ async function Concluir({ searchParams }: { searchParams: Promise<SP> }) {
       </h1>
       <p className={styles.muted}>Passo 3 de 3: pagamento</p>
       <p className={styles.lead}>
-        Olá, {firstName}! Assinatura de {formatBRL(account.plan_price_cents)} a cada 30 dias.
+        Olá, {firstName}! Assinatura mensal de {formatBRL(account.plan_price_cents)}.
       </p>
 
       {claim === "email_mismatch" ? (
@@ -104,7 +104,7 @@ async function Concluir({ searchParams }: { searchParams: Promise<SP> }) {
           <ol className={styles.list}>
             <li>Clique em “Pagar a assinatura” e conclua no Mercado Pago, usando o mesmo e-mail desta conta ({user.email}).</li>
             <li>Volte para esta página (ou para o site). Se o Mercado Pago não trouxer você de volta, abra “Minha conta”.</li>
-            <li>A confirmação é automática e leva até 5 minutos. Para conferir na hora, use “Já paguei, verificar agora”.</li>
+            <li>A confirmação é automática e leva até 10 minutos. Para conferir na hora, use “Já paguei, verificar agora”.</li>
           </ol>
           <p>
             <br />

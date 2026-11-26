@@ -6,8 +6,15 @@ import { updateSession } from "@/lib/auth/session-middleware";
 // `npx @next/codemod@canary middleware-to-proxy .` se o gestor preferir.
 
 export async function middleware(request: NextRequest) {
-  const { response, user } = await updateSession(request);
   const { pathname, search } = request.nextUrl;
+
+  // Painel e MFA só existem no computador da gestão (PAINEL_LOCAL=1). No site público: 404.
+  const localOnly = ["/painel", "/mfa"].some((p) => pathname === p || pathname.startsWith(`${p}/`));
+  if (localOnly && process.env.PAINEL_LOCAL !== "1") {
+    return new NextResponse("Not found", { status: 404 });
+  }
+
+  const { response, user } = await updateSession(request);
 
   // Retorno do Mercado Pago em QUALQUER rota (?preapproval_id=...): leva para a página oficial de retorno,
   // preservando o parâmetro (se não houver login, o /entrar devolve para cá depois).
@@ -22,7 +29,7 @@ export async function middleware(request: NextRequest) {
     return redirect;
   }
 
-  const protectedPath = ["/conta", "/agendar", "/painel", "/assinar/concluir"].some(
+  const protectedPath = ["/conta", "/agendar", "/painel", "/mfa", "/assinar/concluir"].some(
     (p) => pathname === p || pathname.startsWith(`${p}/`),
   );
   if (!user && protectedPath) {
@@ -45,6 +52,7 @@ export const config = {
     "/assinar/:path*",
     "/entrar",
     "/painel/:path*",
+    "/mfa/:path*",
     // qualquer outra rota, só quando o Mercado Pago devolve ?preapproval_id=
     { source: "/((?!_next/|api/|.*\\..*).*)", has: [{ type: "query", key: "preapproval_id" }] },
   ],

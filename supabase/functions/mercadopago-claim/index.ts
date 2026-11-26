@@ -7,7 +7,9 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 const MP = "https://api.mercadopago.com";
-const cors = { "access-control-allow-origin": "*", "access-control-allow-headers": "authorization, content-type, apikey, x-client-info" };
+// CORS restrito ao domínio do site (A9). As chamadas reais vêm de Server Actions (servidor), então não dependem de CORS.
+const SITE_ORIGIN = Deno.env.get("SITE_ORIGIN") ?? "https://muitasconversas.vercel.app";
+const cors = { "access-control-allow-origin": SITE_ORIGIN, "vary": "origin", "access-control-allow-headers": "authorization, content-type, apikey, x-client-info" };
 const json = (status: number, body: unknown) =>
   new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json", ...cors } });
 const cleanToken = (t: string | undefined) => (t ?? "").trim().replace(/^bearer\s+/i, "").replace(/^"|"$/g, "");

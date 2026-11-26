@@ -340,7 +340,7 @@ function PlanSection({ a, pay }: { a: MyAccountRow; pay: PaymentInfo }) {
           <span className={`badge ${st.hasAccess ? "" : "badge-warn"}`}>{st.label}</span>
         </dd>
         <dt>Valor</dt>
-        <dd>{formatBRL(a.plan_price_cents)} a cada 30 dias</dd>
+        <dd>{formatBRL(a.plan_price_cents)} por mês</dd>
         {a.current_period_end && st.key !== "awaiting_payment" && st.key !== "verifying" ? (
           <>
             <dt>{st.key === "active" ? "Válida até" : "Pago até"}</dt>
@@ -370,11 +370,12 @@ function PlanSection({ a, pay }: { a: MyAccountRow; pay: PaymentInfo }) {
           Cancelamento solicitado: não haverá novas cobranças
           {a.current_period_end ? ` e seu acesso vai até ${formatDateOnly(a.current_period_end)}` : ""}.
           {a.current_period_end ? ` Depois dessa data, você poderá assinar de novo.` : ""}
-          {/* POLÍTICA DE REEMBOLSO: A DEFINIR PELO GABRIEL (hoje: sem reembolso do período já pago). */}
         </p>
       ) : status === "active" || status === "past_due" || status === "pending" ? (
         <CancelSubscriptionForm
           accessUntil={status === "active" && a.current_period_end ? formatDateOnly(a.current_period_end) : null}
+          refundEligible={pay?.refund_eligible === true}
+          refundUntil={pay?.refund_until ? formatDateOnly(pay.refund_until) : null}
         />
       ) : null}
     </section>

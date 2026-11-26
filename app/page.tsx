@@ -7,7 +7,7 @@ import { statusLabel } from "@/lib/catalog/types";
 import { PLAN_PRICE } from "@/lib/plan";
 
 const steps = [
-  { title: "Assine", text: "Cadastre-se com seu endereço na Zona Sul e pague " + PLAN_PRICE + " a cada 30 dias, no cartão de crédito. O frete já está incluso." },
+  { title: "Assine", text: "Cadastre-se com seu endereço na Zona Sul e pague " + PLAN_PRICE + " por mês, no cartão de crédito. O frete já está incluso." },
   { title: "Escolha e reserve", text: "Navegue pelo catálogo, veja o que está disponível e reserve. Se o livro estiver emprestado, entre na fila." },
   { title: "Receba em casa", text: "Entregamos o livro no seu endereço, no sábado de troca, entre 09h e 14h." },
   { title: "Troque aos sábados", text: "Fique com o livro por até 28 dias corridos ou troque aos sábados. Na troca, devolvemos o anterior e você recebe o próximo na mesma visita." },
@@ -23,8 +23,8 @@ const faq = [
   { q: "Onde vocês entregam?", a: "Na Zona Sul do Rio, de Leme a São Conrado. Você informa o CEP na assinatura." },
   { q: "Como sou lembrado de devolver?", a: "Por e-mail, 7, 3 e 1 dia antes do fim do prazo. Pedidos de visita e cancelamentos de visita fecham na sexta-feira, às 08h." },
   { q: "E se eu atrasar?", a: "Não há multa, mas enquanto o livro estiver atrasado você não reserva nem recebe outro até devolvê-lo." },
-  { q: "Como pago?", a: "No cartão de crédito, pelo Mercado Pago. A assinatura é de 30 dias por " + PLAN_PRICE + ", com frete incluso, e renova sozinha todo mês até você cancelar." },
-  { q: "Como cancelo?", a: "Em Minha conta, no botão “Cancelar assinatura”. A cobrança para na hora e você continua com acesso até o último dia do período já pago (não há reembolso do período já pago). Para voltar depois, é só assinar de novo." },
+  { q: "Como pago?", a: "No cartão de crédito, pelo Mercado Pago. A assinatura é mensal, " + PLAN_PRICE + " por mês, com frete incluso, e renova sozinha todo mês até você cancelar." },
+  { q: "Como cancelo?", a: "Em Minha conta, no botão “Cancelar assinatura”. A cobrança para na hora e você continua com acesso até o último dia do período já pago. Se for a sua primeira assinatura e o pedido vier em até 7 dias da primeira cobrança, devolvemos o valor integral. Para voltar depois, é só assinar de novo." },
   { q: "Os encontros estão incluídos?", a: "Não. Os encontros presenciais são cobrados à parte e, por enquanto, só para assinantes." },
 ];
 
@@ -64,7 +64,7 @@ export default function Home() {
         <div className={styles.heroText}>
           <h1 id="hero-titulo" className={styles.heroTitle}>Um livro por vez, na sua porta.</h1>
           <p className={styles.heroLead}>
-            Assine por {PLAN_PRICE} a cada 30 dias, escolha no catálogo e receba em casa na Zona Sul. Fique até 28 dias corridos com o livro
+            Assine por {PLAN_PRICE} por mês, escolha no catálogo e receba em casa na Zona Sul. Fique até 28 dias corridos com o livro
             ou troque aos sábados.
           </p>
           <div className="row">
