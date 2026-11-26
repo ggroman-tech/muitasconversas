@@ -8,9 +8,11 @@ import {
 import { getPaymentInfo } from "@/lib/assinatura/server";
 import { ContaView } from "./conta-view";
 
-export const metadata: Metadata = { title: "Minha conta — Muitas Conversas" };
+export const metadata: Metadata = { title: "Minha conta" };
 
-export default function ContaPage() {
+type SP = Promise<Record<string, string | string[] | undefined>>;
+
+export default function ContaPage({ searchParams }: { searchParams: SP }) {
   return (
     <Suspense
       fallback={
@@ -20,13 +22,14 @@ export default function ContaPage() {
         </>
       }
     >
-      <Conta />
+      <Conta searchParams={searchParams} />
     </Suspense>
   );
 }
 
-async function Conta() {
+async function Conta({ searchParams }: { searchParams: SP }) {
   if (!(await getAuthUser())) redirect("/entrar?next=/conta");
+  const sp = await searchParams;
   const supabase = await createSupabaseServerClient();
   const { data: a, error } = await supabase
     .from("my_account")
@@ -45,6 +48,7 @@ async function Conta() {
   }
   if (!a) redirect("/assinar");
 
-  const pay = a.subscription_status === "active" ? null : await getPaymentInfo(supabase);
-  return <ContaView a={a} pay={pay} />;
+  // Sempre busca: mesmo ativa, a assinatura pode ter "cancelamento solicitado".
+  const pay = await getPaymentInfo(supabase);
+  return <ContaView a={a} pay={pay} justActivated={sp.ativada === "1" && a.subscription_status === "active"} />;
 }

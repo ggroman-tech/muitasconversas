@@ -489,3 +489,7 @@ p.muted {
     background: none !important;
   }
 }
+
+/* alvos de toque e tabela larga com rolagem própria */
+.touch { display: inline-flex; align-items: center; min-height: 44px; }
+.tableWide { min-width: 900px; }

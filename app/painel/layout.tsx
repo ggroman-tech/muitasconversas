@@ -9,7 +9,7 @@ import { PainelNav } from "./nav";
 import styles from "./painel.module.css";
 
 export const metadata: Metadata = {
-  title: "Painel — Muitas Conversas",
+  title: "Painel",
   robots: { index: false, follow: false },
 };
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { formatCep, normalizeCep } from "./cep";
-import { readSignupForm, signupErrorMessage, validateSignup } from "./signup-validation";
+import { readSignupForm, signupErrorMessage, validateField, validateSignup } from "./signup-validation";
 
 function form(o: Record<string, string>) {
   const fd = new FormData();
@@ -45,5 +45,19 @@ describe("signupErrorMessage", () => {
   });
   it("erro desconhecido não vaza detalhe", () => {
     expect(signupErrorMessage("boom: relation x").code).toBe("unknown");
+  });
+});
+
+describe("validateField", () => {
+  it("valida um campo por vez, sem exigir os demais", () => {
+    expect(validateField("whatsapp", "")).toBeNull();
+    expect(validateField("whatsapp", "(21) 99999-0000")).toBeNull();
+    expect(validateField("whatsapp", "99")).toBeTruthy();
+    expect(validateField("cep", "22281-080")).toBeNull();
+    expect(validateField("cep", "2228")).toBeTruthy();
+    expect(validateField("full_name", "Al")).toBeTruthy();
+    expect(validateField("full_name", "Ana Silva")).toBeNull();
+    expect(validateField("number", "")).toBeTruthy();
+    expect(validateField("street", "R")).toBeTruthy();
   });
 });

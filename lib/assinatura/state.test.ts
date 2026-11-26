@@ -48,4 +48,32 @@ describe("deriveSubscriptionState", () => {
     expect(deriveSubscriptionState({ status: "canceled", today }).canPay).toBe(true);
     expect(deriveSubscriptionState({ status: null, today }).key).toBe("none");
   });
+  it("ativa com cancelamento solicitado: mantém o acesso e sinaliza", () => {
+    const s = deriveSubscriptionState({
+      status: "active",
+      currentPeriodEnd: "2026-12-22",
+      payment: { cancel_requested_at: "2026-11-22T12:00:00Z" },
+      today,
+    });
+    expect(s.key).toBe("active");
+    expect(s.hasAccess).toBe(true);
+    expect(s.cancelRequested).toBe(true);
+    expect(s.canPay).toBe(false);
+  });
+  it("ativa sem pedido de cancelamento não sinaliza", () => {
+    expect(deriveSubscriptionState({ status: "active", currentPeriodEnd: "2026-12-22", today }).cancelRequested).toBe(false);
+  });
+  it("recusado mas com pagamento aprovado depois: verificando, não falhou", () => {
+    const s = deriveSubscriptionState({ status: "pending", payment: { last_payment_status: "approved", mp_linked: true }, today });
+    expect(s.key).toBe("verifying");
+  });
+  it("quem cancelou pode assinar de novo, mas não precisa verificar", () => {
+    const s = deriveSubscriptionState({ status: "canceled", today });
+    expect(s.canPay).toBe(true);
+    expect(s.canVerify).toBe(false);
+    expect(s.hasAccess).toBe(false);
+  });
+  it("período vencido sem data conhecida não derruba quem está ativo", () => {
+    expect(deriveSubscriptionState({ status: "active", currentPeriodEnd: null, today }).hasAccess).toBe(true);
+  });
 });

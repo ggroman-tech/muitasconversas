@@ -1,5 +1,6 @@
 import { formatDateOnly, formatBRL } from "@/lib/auth/format";
 import { painelClient } from "@/lib/painel/db";
+import { formatPhoneBR } from "@/lib/catalog/text";
 import { requireManager } from "@/lib/painel/guard";
 import { whatsappLink } from "@/lib/painel/route";
 import styles from "../painel.module.css";
@@ -88,8 +89,8 @@ export default async function AssinaturasPage() {
       {rows.length === 0 ? (
         <p>Nenhuma assinatura ainda.</p>
       ) : (
-        <div className={styles.tableWrap}>
-          <table className={styles.table}>
+        <div className={styles.tableWrap} role="region" aria-label="Assinaturas (role para o lado se precisar)" tabIndex={0}>
+          <table className={`${styles.table} ${styles.tableWide}`}>
             <thead>
               <tr>
                 <th scope="col">Assinante</th><th scope="col">Contato</th><th scope="col">Situação</th>
@@ -104,7 +105,7 @@ export default async function AssinaturasPage() {
                     <td>{r.full_name}</td>
                     <td>
                       {r.email}
-                      {wa ? <> · <a href={wa}>WhatsApp</a></> : null}
+                      {wa ? <><br /><a href={wa} className={styles.touch}>WhatsApp {formatPhoneBR(r.whatsapp)}</a></> : null}
                     </td>
                     <td>
                       {r.status === "pending" && r.mp_preapproval_id

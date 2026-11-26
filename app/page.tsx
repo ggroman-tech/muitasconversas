@@ -14,16 +14,17 @@ const steps = [
 ];
 
 const eventos = [
-  { when: "Sábado · data a confirmar", title: "Roda de conversa: livro do mês", where: "Local a confirmar · só para assinantes" },
-  { when: "Sábado · data a confirmar", title: "Troca de livros e café", where: "Local a confirmar · só para assinantes" },
+  { when: "Em breve · data a confirmar", title: "Roda de conversa: livro do mês", where: "Local a confirmar · só para assinantes" },
+  { when: "Em breve · data a confirmar", title: "Troca de livros e café", where: "Local a confirmar · só para assinantes" },
 ];
 
 const faq = [
   { q: "Por quanto tempo posso ficar com o livro?", a: "Um livro por vez, por até 28 dias corridos ou troca aos sábados. Não há renovação automática." },
   { q: "Onde vocês entregam?", a: "Na Zona Sul do Rio, de Leme a São Conrado. Você informa o CEP na assinatura." },
-  { q: "Como sou lembrado de devolver?", a: "Por e-mail, 7, 3 e 1 dia antes do fim do prazo. Pedidos e cancelamentos fecham na sexta-feira, às 08h." },
+  { q: "Como sou lembrado de devolver?", a: "Por e-mail, 7, 3 e 1 dia antes do fim do prazo. Pedidos de visita e cancelamentos de visita fecham na sexta-feira, às 08h." },
   { q: "E se eu atrasar?", a: "Não há multa, mas enquanto o livro estiver atrasado você não reserva nem recebe outro até devolvê-lo." },
-  { q: "Como pago?", a: "No cartão de crédito. Assinatura de 30 dias por " + PLAN_PRICE + ", com frete incluso." },
+  { q: "Como pago?", a: "No cartão de crédito, pelo Mercado Pago. A assinatura é de 30 dias por " + PLAN_PRICE + ", com frete incluso, e renova sozinha todo mês até você cancelar." },
+  { q: "Como cancelo?", a: "Em Minha conta, no botão “Cancelar assinatura”. A cobrança para na hora e você continua com acesso até o último dia do período já pago (não há reembolso do período já pago). Para voltar depois, é só assinar de novo." },
   { q: "Os encontros estão incluídos?", a: "Não. Os encontros presenciais são cobrados à parte e, por enquanto, só para assinantes." },
 ];
 
@@ -47,7 +48,7 @@ async function Novidades() {
       {books.map((b) => (
         <li key={b.id}>
           <Link href={`/catalogo/${b.id}`} className={styles.book} aria-label={`${b.title}, ${b.authors.join(", ")}: ${statusLabel(b)}`}>
-            <BookCover book={b} lazy />
+            <BookCover book={b} lazy decorative />
             <span className={`badge ${b.copies_available > 0 ? "" : b.queue_size > 0 ? styles.sRes : styles.sOut}`}>{statusLabel(b)}</span>
           </Link>
         </li>
@@ -109,14 +110,14 @@ export default function Home() {
           <div className={styles.evText}>
             <h2 id="encontros-titulo" className={styles.h2}>Próximos encontros</h2>
             <p className={styles.text} style={{ fontSize: 16 }}>
-              Por enquanto, os encontros presenciais são só para assinantes. Cada evento é cobrado à parte.
+              Estamos preparando os primeiros encontros presenciais. Os abaixo são exemplos do que vem por aí; datas e locais ainda serão confirmados. Serão só para assinantes e cobrados à parte.
             </p>
             <Link className="btn2" href="/encontros">Ver todos os encontros</Link>
           </div>
           <ul className={styles.evList}>
             {eventos.map((e) => (
               <li key={e.title} className={styles.ev}>
-                <span className={styles.evWhen}>{e.when}</span>
+                <span className={styles.evWhen}>{e.when} · exemplo</span>
                 <span className={`h ${styles.evTitle}`}>{e.title}</span>
                 <span className={styles.evWhere}>{e.where}</span>
               </li>

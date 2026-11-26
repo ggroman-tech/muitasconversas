@@ -8,7 +8,7 @@ import { AgendarView } from "./agendar-view";
 import styles from "./agendar.module.css";
 
 export const metadata: Metadata = {
-  title: "Agendar troca ou devolução — Muitas Conversas",
+  title: "Agendar troca ou devolução",
 };
 
 export default function AgendarPage() {

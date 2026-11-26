@@ -34,7 +34,8 @@ const areas = [
 const fluxos = [
   { name: "Assinar", path: "Início → Assinar → confirmar e-mail → dados e endereço → aceite das regras → pagamento por cartão de crédito → Minha conta" },
   { name: "Reservar", path: "Catálogo → Livro → Reservar (ou entrar na fila) → confirmação → entrega no sábado de troca" },
-  { name: "Devolver ou trocar", path: "Minha conta → Agendar → confirmação por e-mail. Pedidos e cancelamentos fecham na sexta-feira, às 08h." },
+  { name: "Devolver ou trocar", path: "Minha conta → Agendar → confirmação por e-mail. Pedidos de visita e cancelamentos de visita fecham na sexta-feira, às 08h." },
+  { name: "Cancelar a assinatura", path: "Minha conta → Plano → Cancelar assinatura → confirmar. A cobrança para na hora; o acesso vai até o fim do período pago (sem reembolso do período já pago)." },
   { name: "Lembrete", path: "7, 3 e 1 dia antes do prazo: aviso por e-mail com link direto para Agendar" },
 ];
 
@@ -42,14 +43,18 @@ const regras = [
   { q: "Preço e frete", a: PLAN_PRICE + " por assinatura de 30 dias, com frete incluso." },
   { q: "Livros por assinante", a: "Um livro por vez." },
   { q: "Prazo e renovação", a: "Um livro por vez, por até 28 dias corridos ou troca aos sábados. Não há renovação automática." },
-  { q: "Dia e horário de troca", a: "Trocas aos sábados, das 09h às 14h. Pedidos e cancelamentos fecham na sexta-feira, às 08h." },
+  { q: "Dia e horário de troca", a: "Trocas aos sábados, das 09h às 14h. Pedidos de visita e cancelamentos de visita fecham na sexta-feira, às 08h." },
   { q: "Atraso", a: "Não há multa. Com um livro atrasado, você não reserva nem recebe outro até devolvê-lo." },
   { q: "Lembretes", a: "Enviamos lembretes de devolução por e-mail 7, 3 e 1 dia antes do prazo." },
   {
     q: "Área de entrega",
     a: "Zona Sul do Rio: Leme/Copacabana; Glória/Catete/Flamengo/Laranjeiras; Botafogo/Humaitá/Urca; Ipanema/Arpoador/Leblon; Lagoa/Jardim Botânico/Gávea; São Conrado.",
   },
-  { q: "Pagamento", a: "No cartão de crédito." },
+  { q: "Pagamento", a: "No cartão de crédito, pelo Mercado Pago. A assinatura renova sozinha a cada 30 dias até ser cancelada." },
+  // POLÍTICA DE REEMBOLSO: a definir pelo Gabriel. Hoje o texto abaixo diz que NÃO há reembolso do período já pago
+  // (a cobrança para na hora e o acesso segue até o fim do período). Se mudar, ajustar aqui, no FAQ da home e no aviso de /conta.
+  { q: "Cancelamento da assinatura", a: "Você cancela quando quiser em Minha conta. A cobrança para na hora e o acesso continua até o último dia do período já pago; não há reembolso do período já pago. Depois disso, as reservas na fila são desfeitas e, para voltar, é preciso assinar de novo." },
+  { q: "Pagamento recusado", a: "Se a cobrança for recusada, a assinatura fica em atraso e não dá para reservar até regularizar o pagamento." },
   { q: "Encontros presenciais", a: "Só para assinantes e cobrados à parte." },
   { q: "Dados pessoais", a: "Nome, endereço e WhatsApp são usados só para prestar o serviço, com seu consentimento (LGPD)." },
 ];

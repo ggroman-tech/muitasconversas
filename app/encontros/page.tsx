@@ -13,7 +13,7 @@ const EXEMPLOS = [
 
 export default function EncontrosPage() {
   return (
-    <main className={`container ${s.page}`}>
+    <main id="conteudo" className={`container ${s.page}`}>
       <div className={s.head}>
         <h1 className="page-title">Encontros</h1>
         <p className={s.lead}>
@@ -47,7 +47,7 @@ export default function EncontrosPage() {
       </ul>
 
       <p className={s.note}>
-        A forma de pagamento do ingresso (Pix na confirmação ou combinado pelo WhatsApp) ainda será definida.
+        A forma de pagamento do ingresso ainda será definida e avisada aos assinantes.
       </p>
     </main>
   );

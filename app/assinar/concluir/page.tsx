@@ -9,7 +9,7 @@ import { createSupabaseServerClient, getAuthUser } from "@/lib/auth/supabase-ser
 import styles from "@/lib/auth/ui.module.css";
 import { VerifyPayment } from "../verify-payment";
 
-export const metadata: Metadata = { title: "Pagamento da assinatura — Muitas Conversas" };
+export const metadata: Metadata = { title: "Pagamento da assinatura" };
 
 type SP = { preapproval_id?: string };
 
@@ -55,7 +55,7 @@ async function Concluir({ searchParams }: { searchParams: Promise<SP> }) {
       status: account.subscription_status,
       currentPeriodEnd: account.current_period_end,
     });
-    if (st.hasAccess) redirect("/conta");
+    if (st.hasAccess) redirect("/conta?ativada=1");
   }
 
   const payment = await getPaymentInfo(supabase);
@@ -74,9 +74,22 @@ async function Concluir({ searchParams }: { searchParams: Promise<SP> }) {
       <h1 className={styles.h1}>
         {state.key === "verifying" ? "Verificando o seu pagamento" : "Pagamento da assinatura"}
       </h1>
+      <p className={styles.muted}>Passo 3 de 3: pagamento</p>
       <p className={styles.lead}>
         Olá, {firstName}! Assinatura de {formatBRL(account.plan_price_cents)} a cada 30 dias.
       </p>
+
+      {claim === "email_mismatch" ? (
+        <p role="alert" className={styles.errorBox} style={{ marginBottom: "1rem" }}>
+          Esse pagamento foi feito com outro e-mail, diferente do desta conta ({user.email}). Por segurança, não
+          liberamos automaticamente: fale com a gente para vincular o pagamento à sua conta.
+        </p>
+      ) : null}
+      {claim === "taken" || claim === "other_linked" ? (
+        <p role="alert" className={styles.errorBox} style={{ marginBottom: "1rem" }}>
+          Esse pagamento já está vinculado a outra assinatura. Se achar que é um engano, fale com a gente.
+        </p>
+      ) : null}
 
       <div className={styles.card} role="status">
         <p>
@@ -87,14 +100,19 @@ async function Concluir({ searchParams }: { searchParams: Promise<SP> }) {
         ) : null}
 
         {state.canPay && payUrl ? (
+          <>
+          <ol className={styles.list}>
+            <li>Clique em “Pagar a assinatura” e conclua no Mercado Pago, usando o mesmo e-mail desta conta ({user.email}).</li>
+            <li>Volte para esta página (ou para o site). Se o Mercado Pago não trouxer você de volta, abra “Minha conta”.</li>
+            <li>A confirmação é automática e leva até 5 minutos. Para conferir na hora, use “Já paguei, verificar agora”.</li>
+          </ol>
           <p>
-            Pague no Mercado Pago, em ambiente seguro, usando o mesmo e-mail desta conta ({user.email}). Depois de
-            pagar, volte para esta página.
             <br />
             <a href={payUrl} className={styles.button}>
               Pagar a assinatura
             </a>
           </p>
+          </>
         ) : null}
         {state.canPay && !payUrl ? (
           <p className={styles.muted}>O pagamento ainda não está disponível. Tente novamente mais tarde.</p>

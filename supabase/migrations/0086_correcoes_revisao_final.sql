@@ -100,3 +100,5 @@ begin
   get diagnostics n2 = row_count;
   return n1 + n2;
 end $f$;
+
+-- ATENÇÃO: os filtros "cancel_requested_at is null" de reserve_book e mc_promote_queue (item 4 acima) foram REVERTIDOS pela 0088: quem pediu cancelamento usa tudo até o fim do período pago.

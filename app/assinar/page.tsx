@@ -8,7 +8,7 @@ import styles from "@/lib/auth/ui.module.css";
 import { SignupForm } from "./signup-form";
 import { PLAN_PRICE_FULL } from "@/lib/plan";
 
-export const metadata: Metadata = { title: "Assinar — Muitas Conversas" };
+export const metadata: Metadata = { title: "Assinar" };
 
 export default function AssinarPage() {
   return (
@@ -53,7 +53,7 @@ async function Etapa() {
     return (
       <>
         <p className={styles.lead}>
-          Passo 1 de 2: confirme seu e-mail. Enviamos um link de acesso, sem senha.
+          Passo 1 de 3: confirme seu e-mail. Enviamos um link de acesso, sem senha. Depois vêm os seus dados e o pagamento.
         </p>
         <div className={styles.card}>
           <LoginForm next="/assinar" submitLabel="Confirmar e-mail" />
@@ -83,7 +83,7 @@ async function Etapa() {
 
   return (
     <>
-      <p className={styles.lead}>Passo 2 de 2: seus dados e endereço de entrega.</p>
+      <p className={styles.lead}>Passo 2 de 3: seus dados e endereço de entrega. O pagamento é o passo 3 e vem logo em seguida.</p>
       <SignupForm email={user.email ?? ""} config={config} />
     </>
   );

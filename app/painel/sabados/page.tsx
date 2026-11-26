@@ -20,7 +20,7 @@ export default async function SabadosPage() {
     <>
       <h1 className={styles.h1}>Sábados</h1>
       <p className={styles.lead}>
-        Entregas e coletas aos sábados, das 9h às 14h. Os pedidos fecham na sexta-feira, às 8h
+        Entregas e coletas aos sábados, das 09h às 14h. Os pedidos fecham na sexta-feira, às 08h
         (horário de Brasília).
       </p>
       <h2 className={styles.h2}>Gerar próximos sábados</h2>

@@ -26,11 +26,22 @@ export function CancelSubscriptionForm({ accessUntil }: { accessUntil?: string |
           <summary>Cancelar assinatura</summary>
           <form action={action} className={styles.cancelBody}>
             <p>
-              Tem certeza? A cobrança é interrompida agora
-              {accessUntil ? ` e você continua com acesso até ${accessUntil}` : ""}. Depois disso, para
-              voltar, será preciso assinar de novo.
+              <strong>Tem certeza que quer cancelar?</strong>
             </p>
-            <button type="submit" className="btn-danger" disabled={pending}>
+            <ul style={{ margin: "0 0 12px 18px" }}>
+              <li>A cobrança é interrompida agora: não haverá novas cobranças.</li>
+              <li>
+                {accessUntil
+                  ? `Você continua com acesso (reservas, fila e trocas) até ${accessUntil}.`
+                  : "Sua assinatura será encerrada agora."}
+              </li>
+              {/* POLÍTICA DE REEMBOLSO: A DEFINIR PELO GABRIEL. Hoje o texto abaixo diz que NÃO há reembolso do período já pago;
+                  se a decisão for outra (ex.: proporcional), ajustar aqui e em app/regras. */}
+              <li>O período já pago não é reembolsado.</li>
+              <li>Reservas que ainda estiverem na fila nessa data serão canceladas.</li>
+              <li>Para voltar depois, é só assinar de novo, a qualquer momento após o fim do período.</li>
+            </ul>
+            <button type="submit" className="btn-danger" disabled={pending} aria-busy={pending}>
               {pending ? "Cancelando…" : "Sim, cancelar assinatura"}
             </button>
           </form>

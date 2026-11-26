@@ -13,20 +13,32 @@ export function AgendarView({ o }: { o: ScheduleOptions }) {
 
   return (
     <>
-      <section className={`card ${styles.panel}`} aria-labelledby="oquefazer">
-        <h2 id="oquefazer" className={`h ${styles.h2}`}>
-          O que será feito
-        </h2>
+      <section className={`card ${styles.panel}`} aria-labelledby={o.has_active_subscription && doing.length === 0 ? undefined : "oquefazer"} aria-label={o.has_active_subscription && doing.length === 0 ? "Nada para agendar" : undefined}>
+        {o.has_active_subscription && doing.length === 0 ? null : (
+          <h2 id="oquefazer" className={`h ${styles.h2}`}>
+            O que será feito
+          </h2>
+        )}
         {!o.has_active_subscription ? (
-          <p>
-            Sua assinatura não está ativa. É preciso ter uma assinatura ativa
-            para agendar.
-          </p>
+          <>
+            <p>
+              Sua assinatura não está ativa. É preciso ter uma assinatura ativa
+              para agendar.
+            </p>
+            <p>
+              <Link href="/conta" className="btn2">Ver minha assinatura</Link>
+            </p>
+          </>
         ) : doing.length === 0 ? (
-          <p>
-            Não há entrega nem coleta para agendar agora. Reserve um livro no{" "}
-            <Link href="/catalogo">catálogo</Link>.
-          </p>
+          <>
+            <p>
+              Não há entrega nem coleta para agendar agora. Reserve um livro no
+              catálogo para escolher a entrega.
+            </p>
+            <p>
+              <Link href="/catalogo" className="btn">Ver o catálogo</Link>
+            </p>
+          </>
         ) : (
           <>
             <ul className={styles.todo}>

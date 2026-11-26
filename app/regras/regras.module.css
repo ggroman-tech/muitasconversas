@@ -19,5 +19,5 @@
 .rule dt { font-size: 15px; font-weight: 600; }
 .rule dd { margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink-2); }
 .links { font-size: 14px; color: var(--ink-2); }
-.links a { font-weight: 600; }
+.links a { font-weight: 600; min-height: 44px; display: inline-flex; align-items: center; padding: 0 4px; }
 @media (max-width: 640px) { .wrap { padding: 32px 20px; } .title { font-size: 32px; } .panel { padding: 20px; } }

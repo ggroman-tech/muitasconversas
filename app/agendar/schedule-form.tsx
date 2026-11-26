@@ -92,6 +92,7 @@ export function ScheduleForm({
                           name="window_id"
                           value={w.window_id}
                           disabled={w.full}
+                          defaultChecked={state.values?.window_id === String(w.window_id)}
                           required
                         />
                         <span className={styles.optionText}>
@@ -140,7 +141,7 @@ export function ScheduleForm({
             <label htmlFor="note">
               Recado para quem for ao seu endereço (opcional)
             </label>
-            <textarea id="note" name="note" rows={3} maxLength={500} />
+            <textarea id="note" name="note" rows={3} maxLength={500} defaultValue={state.values?.note ?? ""} />
             <span className={styles.hint}>
               Ex.: deixar com o porteiro. Até 500 caracteres.
             </span>
@@ -153,7 +154,7 @@ export function ScheduleForm({
           <strong>Sem multa e sem renovação automática.</strong> Você pode
           cancelar a visita em Minha conta até as 08h da sexta-feira.
         </p>
-        <button type="submit" className="btn" disabled={pending}>
+        <button type="submit" className="btn" disabled={pending} aria-busy={pending}>
           {pending ? "Agendando…" : "Agendar"}
         </button>
       </div>

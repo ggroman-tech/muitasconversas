@@ -1,9 +1,12 @@
 "use client";
 
-import { useActionState, useState, useTransition } from "react";
+import { useActionState, useEffect, useState, useTransition } from "react";
 import { CONSENT_PURPOSES, type ConsentPurpose } from "@/lib/auth/consents";
 import type { SignupConfig } from "@/lib/auth/database.types";
+import { formatCep } from "@/lib/auth/cep";
 import { formatBRL } from "@/lib/auth/format";
+import { formatPhoneBr } from "@/lib/auth/masks";
+import { validateField, type SignupFields } from "@/lib/auth/signup-validation";
 import styles from "@/lib/auth/ui.module.css";
 import { checkCep, submitSignup, type SignupState } from "./actions";
 
@@ -30,9 +33,15 @@ function Field(props: {
   defaultValue?: string;
   maxLength?: number;
   onBlur?: (v: string) => void;
+  /** Formata enquanto digita (só quando o cursor está no fim, para não atrapalhar edição no meio). */
+  mask?: (v: string) => string;
+  /** Se informado, valida ao sair do campo e mostra o erro na hora. */
+  validateAs?: keyof SignupFields;
 }) {
-  const { id, label, error, hint, required, onBlur, ...rest } = props;
-  const describedBy = [hint ? `${id}-dica` : "", error ? `${id}-erro` : ""].filter(Boolean).join(" ");
+  const { id, label, error, hint, required, onBlur, mask, validateAs, ...rest } = props;
+  const [liveError, setLiveError] = useState<string | null>(null);
+  const shownError = error ?? liveError ?? undefined;
+  const describedBy = [hint ? `${id}-dica` : "", shownError ? `${id}-erro` : ""].filter(Boolean).join(" ");
   return (
     <div className={styles.field}>
       <label htmlFor={id} className={styles.label}>
@@ -44,9 +53,27 @@ function Field(props: {
         name={id}
         className={styles.input}
         required={required}
-        aria-invalid={error ? true : undefined}
+        aria-invalid={shownError ? true : undefined}
         aria-describedby={describedBy || undefined}
-        onBlur={onBlur ? (e) => onBlur(e.currentTarget.value) : undefined}
+        onInput={
+          mask
+            ? (e) => {
+                const el = e.currentTarget;
+                if (el.selectionStart === el.value.length) {
+                  const f = mask(el.value);
+                  if (f !== el.value) el.value = f;
+                }
+                if (liveError) setLiveError(null);
+              }
+            : liveError
+              ? () => setLiveError(null)
+              : undefined
+        }
+        onBlur={(e) => {
+          const v = e.currentTarget.value;
+          if (validateAs) setLiveError(v.trim() || required ? validateField(validateAs, v) : null);
+          onBlur?.(v);
+        }}
         {...rest}
       />
       {hint ? (
@@ -54,9 +81,9 @@ function Field(props: {
           {hint}
         </span>
       ) : null}
-      {error ? (
+      {shownError ? (
         <p id={`${id}-erro`} role="alert" className={styles.error}>
-          {error}
+          {shownError}
         </p>
       ) : null}
     </div>
@@ -69,6 +96,14 @@ export function SignupForm({ email, config }: { email: string; config: SignupCon
   const [, startTransition] = useTransition();
   const v = state.values;
   const e = state.errors;
+
+  // Depois de uma resposta com erro, leva o foco ao primeiro campo com problema (o formulário é remontado a cada envio).
+  useEffect(() => {
+    if (state.nonce === 0) return;
+    const el = document.querySelector<HTMLElement>('form [aria-invalid="true"]');
+    if (el) el.focus();
+    else if (state.formError) document.querySelector<HTMLElement>('form [role="alert"]')?.scrollIntoView({ block: "center" });
+  }, [state]);
 
   function onCepBlur(value: string) {
     if (!value.trim()) return setCepStatus(null);
@@ -92,7 +127,7 @@ export function SignupForm({ email, config }: { email: string; config: SignupCon
           <span>{email}</span>
           <span className={styles.hint}>E-mail confirmado pelo link de acesso.</span>
         </div>
-        <Field id="full_name" label="Nome completo" required autoComplete="name" defaultValue={v?.full_name} error={e.full_name} />
+        <Field id="full_name" label="Nome completo" required autoComplete="name" defaultValue={v?.full_name} error={e.full_name} validateAs="full_name" />
         <Field
           id="whatsapp"
           label="WhatsApp"
@@ -102,6 +137,8 @@ export function SignupForm({ email, config }: { email: string; config: SignupCon
           defaultValue={v?.whatsapp}
           hint="Com DDD. Ex.: (21) 99999-0000"
           error={e.whatsapp}
+          mask={formatPhoneBr}
+          validateAs="whatsapp"
         />
       </fieldset>
 
@@ -125,15 +162,18 @@ export function SignupForm({ email, config }: { email: string; config: SignupCon
           defaultValue={v?.cep}
           onBlur={onCepBlur}
           error={e.cep}
+          mask={formatCep}
+          validateAs="cep"
+          hint="Só os números; já conferimos se entregamos no seu endereço."
         />
         {cepStatus && !e.cep ? (
-          <p role="status" className={cepStatus.ok ? undefined : styles.error}>
+          <p role="status" aria-live="polite" className={cepStatus.ok ? undefined : styles.error}>
             {cepStatus.message}
           </p>
         ) : null}
         <div className={`${styles.row} ${styles.row3}`}>
-          <Field id="number" label="Número" required autoComplete="off" defaultValue={v?.number} error={e.number} />
-          <Field id="street" label="Rua" required autoComplete="address-line1" defaultValue={v?.street} error={e.street} />
+          <Field id="number" label="Número" required autoComplete="off" defaultValue={v?.number} error={e.number} validateAs="number" />
+          <Field id="street" label="Rua" required autoComplete="address-line1" defaultValue={v?.street} error={e.street} validateAs="street" />
         </div>
         <div className={`${styles.row} ${styles.row2}`}>
           <Field id="complement" label="Complemento" autoComplete="address-line2" defaultValue={v?.complement} />

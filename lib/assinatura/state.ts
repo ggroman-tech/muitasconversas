@@ -37,6 +37,8 @@ export type SubscriptionState = {
   canPay: boolean;
   /** Mostrar "Já paguei, verificar agora"? */
   canVerify: boolean;
+  /** O cliente pediu cancelamento: a cobrança parou e o acesso segue até o fim do período pago. */
+  cancelRequested: boolean;
 };
 
 /** Data de hoje (yyyy-mm-dd) em America/Sao_Paulo, o mesmo critério do banco. */
@@ -74,15 +76,20 @@ export function deriveSubscriptionState(input: {
           hasAccess: false,
           canPay: true,
           canVerify: true,
+          cancelRequested: false,
         };
       }
+      const cancelRequested = Boolean(payment?.cancel_requested_at);
       return {
         key: "active",
-        label: "Ativa",
-        description: end ? "Sua assinatura está ativa." : "Sua assinatura está ativa.",
+        label: cancelRequested ? "Ativa até o fim do período" : "Ativa",
+        description: cancelRequested
+          ? "Você cancelou: não haverá novas cobranças e seu acesso continua até o fim do período pago."
+          : "Sua assinatura está ativa.",
         hasAccess: true,
         canPay: false,
         canVerify: false,
+        cancelRequested,
       };
     }
     case "pending":
@@ -95,6 +102,7 @@ export function deriveSubscriptionState(input: {
           hasAccess: false,
           canPay: true,
           canVerify: true,
+          cancelRequested: false,
         };
       }
       if (mpLinked || paidSomething) {
@@ -102,20 +110,22 @@ export function deriveSubscriptionState(input: {
           key: "verifying",
           label: "Verificando pagamento",
           description:
-            "Encontramos o seu pagamento no Mercado Pago e estamos confirmando. Costuma levar poucos instantes.",
+            "Encontramos o seu pagamento no Mercado Pago e estamos confirmando. Costuma levar de alguns segundos a uns 5 minutos; você pode conferir na hora com o botão abaixo.",
           hasAccess: false,
           canPay: false,
           canVerify: true,
+          cancelRequested: false,
         };
       }
       return {
         key: "awaiting_payment",
         label: "Aguardando pagamento",
         description:
-          "Sua assinatura foi criada e aguarda o pagamento. Se você já pagou, use “Já paguei, verificar agora”.",
+          "Sua assinatura foi criada e aguarda o pagamento. Se você já pagou, use “Já paguei, verificar agora”: a confirmação automática pode levar até 5 minutos.",
         hasAccess: false,
         canPay: true,
         canVerify: true,
+        cancelRequested: false,
       };
     case "past_due":
       return {
@@ -126,6 +136,7 @@ export function deriveSubscriptionState(input: {
         hasAccess: false,
         canPay: true,
         canVerify: true,
+        cancelRequested: false,
       };
     case "paused":
       return {
@@ -135,6 +146,7 @@ export function deriveSubscriptionState(input: {
         hasAccess: false,
         canPay: false,
         canVerify: false,
+        cancelRequested: false,
       };
     case "canceled":
       return {
@@ -144,6 +156,7 @@ export function deriveSubscriptionState(input: {
         hasAccess: false,
         canPay: true,
         canVerify: false,
+        cancelRequested: false,
       };
     default:
       return {
@@ -153,6 +166,7 @@ export function deriveSubscriptionState(input: {
         hasAccess: false,
         canPay: false,
         canVerify: false,
+        cancelRequested: false,
       };
   }
 }

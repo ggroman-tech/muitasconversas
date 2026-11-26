@@ -4,7 +4,12 @@ import { revalidatePath } from "next/cache";
 import { createSupabaseServerClient, getAuthUser } from "@/lib/auth/supabase-server";
 import { scheduleVisitErrorMessage } from "@/lib/schedule/errors";
 
-export type ScheduleState = { status: "idle" | "ok" | "error"; message?: string };
+export type ScheduleState = {
+  status: "idle" | "ok" | "error";
+  message?: string;
+  /** O que o cliente tinha escolhido: o React limpa o formulário após a ação, então devolvemos para repovoar em caso de erro. */
+  values?: { window_id?: string; note?: string };
+};
 
 const UUID = /^[0-9a-f-]{36}$/i;
 
@@ -14,11 +19,12 @@ export async function scheduleVisit(_prev: ScheduleState, formData: FormData): P
   const windowId = Number(formData.get("window_id"));
   const addressId = String(formData.get("address_id") ?? "");
   const noteRaw = String(formData.get("note") ?? "").trim();
+  const values = { window_id: String(formData.get("window_id") ?? ""), note: noteRaw };
   if (!Number.isInteger(windowId) || windowId <= 0) {
-    return { status: "error", message: "Escolha um horário de atendimento." };
+    return { status: "error", message: "Escolha um horário de atendimento.", values };
   }
-  if (!UUID.test(addressId)) return { status: "error", message: "Escolha o endereço." };
-  if (noteRaw.length > 500) return { status: "error", message: "O recado pode ter no máximo 500 caracteres." };
+  if (!UUID.test(addressId)) return { status: "error", message: "Escolha o endereço.", values };
+  if (noteRaw.length > 500) return { status: "error", message: "O recado pode ter no máximo 500 caracteres.", values };
 
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.rpc("schedule_visit", {
@@ -26,7 +32,7 @@ export async function scheduleVisit(_prev: ScheduleState, formData: FormData): P
     p_address_id: addressId,
     p_note: noteRaw || null,
   });
-  if (error) return { status: "error", message: scheduleVisitErrorMessage(error) };
+  if (error) return { status: "error", message: scheduleVisitErrorMessage(error), values };
 
   revalidatePath("/conta");
   revalidatePath("/agendar");

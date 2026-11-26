@@ -10,6 +10,7 @@ import {
   formatTime,
   formatWeekday,
 } from "@/lib/auth/format";
+import { formatPhoneDisplay } from "@/lib/auth/masks";
 import { CancelVisitForm } from "./cancel-visit-form";
 import { CancelSubscriptionForm } from "./cancel-subscription-form";
 import styles from "./conta.module.css";
@@ -42,10 +43,30 @@ function daysLeftText(n: number): string {
 }
 
 /** Tela "Minha conta" (apresentação pura, a partir da linha da view my_account). */
-export function ContaView({ a, pay = null }: { a: MyAccountRow; pay?: PaymentInfo }) {
+export function ContaView({
+  a,
+  pay = null,
+  justActivated = false,
+}: {
+  a: MyAccountRow;
+  pay?: PaymentInfo;
+  justActivated?: boolean;
+}) {
   return (
     <div className={styles.page}>
       <h1 className="h page-title">Olá, {a.full_name.split(" ")[0]}</h1>
+      {justActivated ? (
+        <div role="status" className="alert alert-ok">
+          <p>
+            <strong>Pagamento confirmado!</strong> Sua assinatura está ativa
+            {a.current_period_end ? ` até ${formatDateOnly(a.current_period_end)}` : ""}. Já dá para escolher seu
+            primeiro livro.
+          </p>
+          <Link href="/catalogo" className="btn">
+            Ver o catálogo
+          </Link>
+        </div>
+      ) : null}
       {(() => {
         const st = deriveSubscriptionState({
           status: a.subscription_status,
@@ -344,11 +365,12 @@ function PlanSection({ a, pay }: { a: MyAccountRow; pay: PaymentInfo }) {
       {st.canVerify ? (
         <VerifyPayment auto buttonClass="btn2" textClass="muted" />
       ) : null}
-      {pay?.cancel_requested_at && status !== "canceled" ? (
+      {st.cancelRequested && status !== "canceled" ? (
         <p className="muted" role="status">
           Cancelamento solicitado: não haverá novas cobranças
           {a.current_period_end ? ` e seu acesso vai até ${formatDateOnly(a.current_period_end)}` : ""}.
           {a.current_period_end ? ` Depois dessa data, você poderá assinar de novo.` : ""}
+          {/* POLÍTICA DE REEMBOLSO: A DEFINIR PELO GABRIEL (hoje: sem reembolso do período já pago). */}
         </p>
       ) : status === "active" || status === "past_due" || status === "pending" ? (
         <CancelSubscriptionForm
@@ -440,7 +462,7 @@ function DataSection({ a }: { a: MyAccountRow }) {
         <dt>E-mail</dt>
         <dd style={{ overflowWrap: "anywhere" }}>{a.email}</dd>
         <dt>WhatsApp</dt>
-        <dd>{a.whatsapp ?? "não informado"}</dd>
+        <dd>{a.whatsapp ? formatPhoneDisplay(a.whatsapp) : "não informado"}</dd>
       </dl>
     </section>
   );

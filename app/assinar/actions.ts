@@ -46,17 +46,24 @@ export async function submitSignup(prev: SignupState, formData: FormData): Promi
   if (Object.keys(errors).length > 0) return { errors, values, nonce };
 
   const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase.rpc("signup_customer", {
-    p_full_name: fields.full_name,
-    p_whatsapp: fields.whatsapp,
-    p_cep: fields.cep,
-    p_street: fields.street,
-    p_number: fields.number,
-    p_complement: fields.complement,
-    p_reference: fields.reference,
-    p_consents: consents,
-    p_consent_version: String(formData.get("consent_version") ?? ""),
-  });
+  let rpc;
+  try {
+    rpc = await supabase.rpc("signup_customer", {
+      p_full_name: fields.full_name,
+      p_whatsapp: fields.whatsapp,
+      p_cep: fields.cep,
+      p_street: fields.street,
+      p_number: fields.number,
+      p_complement: fields.complement,
+      p_reference: fields.reference,
+      p_consents: consents,
+      p_consent_version: String(formData.get("consent_version") ?? ""),
+    });
+  } catch {
+    return { errors: {}, formError: "Não foi possível concluir o cadastro agora. Confira sua conexão e tente de novo.", values, nonce };
+  }
+  const { data, error } = rpc;
+
 
   if (error || !data) {
     const m = signupErrorMessage(error?.message);

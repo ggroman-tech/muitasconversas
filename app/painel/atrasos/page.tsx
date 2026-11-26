@@ -1,6 +1,7 @@
 import { formatDateOnly } from "@/lib/auth/format";
 import { painelClient } from "@/lib/painel/db";
 import { requireManager } from "@/lib/painel/guard";
+import { formatPhoneBR } from "@/lib/catalog/text";
 import { whatsappLink } from "@/lib/painel/route";
 import type { OverdueRow } from "@/lib/painel/types";
 import styles from "../painel.module.css";
@@ -63,11 +64,11 @@ export default async function AtrasosPage() {
                         <>
                           <br />
                           {wa ? (
-                            <a href={wa} className={styles.link}>
-                              {r.customer_whatsapp}
+                            <a href={wa} className={`${styles.link} ${styles.touch}`}>
+                              {formatPhoneBR(r.customer_whatsapp)}
                             </a>
                           ) : (
-                            r.customer_whatsapp
+                            formatPhoneBR(r.customer_whatsapp)
                           )}
                         </>
                       ) : null}

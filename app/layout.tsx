@@ -20,6 +20,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body>
+        <a href="#conteudo" className="skip-link">Pular para o conteúdo</a>
         <SiteHeader />
         {children}
         <SiteFooter />

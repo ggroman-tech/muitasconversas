@@ -55,6 +55,13 @@ export function validateSignup(
   return e;
 }
 
+/** Validação de um campo só (mensagem inline ao sair do campo). Devolve null se estiver ok. */
+export function validateField(name: keyof SignupFields, value: string): string | null {
+  const probe: SignupFields = { full_name: "ok ok", whatsapp: "", cep: "22281080", street: "ok", number: "1", complement: "", reference: "" };
+  const errors = validateSignup({ ...probe, [name]: value.trim() }, { privacy_policy: true, service_rules: true });
+  return errors[name] ?? null;
+}
+
 export const OUT_OF_AREA_MESSAGE =
   "Ainda não entregamos neste CEP. Atendemos somente a Zona Sul do Rio, nas áreas já liberadas. Confira o CEP ou tente outro endereço de entrega.";
 
